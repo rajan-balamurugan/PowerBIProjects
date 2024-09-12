@@ -1,0 +1,814 @@
+table 'Measure Table'
+	lineageTag: a06257b4-4ddb-4425-9cd3-f40845bd2ee7
+
+	measure 'Current Quarter Label' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-1", "QTD")
+			RETURN
+			"Current Quarter or CQ is referring to " & CALCULATE(MAX('Time'[Fiscal Quarter]),'Time'[Fiscal Quarter To Date]=vQTD) & " and YoY/QoQ compares considering data through Week" & MWN
+			```
+		lineageTag: 04624a0e-b4e5-413d-b674-f6a54197ee4d
+
+	measure MWN_Q = ```
+			
+			VAR MWN = Calculate(MAX('Time'[Week Number in Quarter]),'Time'[Fiscal Quarter To Date]="QTD")
+			VAR vWeek = IF( MWN < 13 && MWN > 1, MWN - 1, MWN) 
+			return vWeek
+			```
+		formatString: 0
+		lineageTag: 1186bcca-2da2-4ca7-a005-17c801f6589a
+
+	measure SELLOUT(QTD) = ```
+			
+			    VAR mxWk = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(mxWk >= 13 || mxWk <= 2, "QTD-1", "QTD")
+			return
+			CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Quarter To Date] = vQTD && 'Time'[Week Number in Quarter] <= mxWk)
+			```
+		lineageTag: f25eae0e-8601-4c88-973a-1762064be4b2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure SELLOUT(QTD-2) = ```
+			
+			    VAR mxWk = CALCULATE(MAX('Time'[Week Number in Quarter]), 'Time'[Fiscal Quarter To Date] = "QTD-2")
+			    VAR vWeek = IF( mxWk < 13 && mxWk > 1, mxWk - 1, mxWk) 
+			    VAR vQTD = IF( mxWk = 13 || mxWk <= 2, "QTD-3", "QTD-2")
+			RETURN
+			    CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Quarter To Date] = vQTD && 'Time'[Week Number in Quarter] <= vWeek)
+			```
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		lineageTag: 68b64e35-05bc-4a6b-bdde-a6225a8dcaf9
+
+	measure SELLOUT(QTD-1) = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vWeek = IF( MWN < 13 && MWN > 1, MWN - 1, MWN) 
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-2", "QTD-1")
+			return
+			CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Quarter To Date] = vQTD, 'Time'[Week Number in Quarter] <= vWeek)
+			```
+		lineageTag: a780fa77-e498-44d7-901f-9f218eacc296
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CQ % QoQ' = IF(OR(ISBLANK([SELLOUT(QTD-1)]), ISBLANK([SELLOUT(QTD)])), 0, [SELLOUT(QTD)] / [SELLOUT(QTD-1)]-1)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 9325ebd6-dc40-4d06-ae82-fa23ade8182a
+
+	measure SELLOUT(QTD-4) = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-5", "QTD-4")
+			return
+			CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Quarter To Date] = vQTD, 'Time'[Week Number in Quarter] <= MWN)
+			```
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		lineageTag: cf01c845-d485-440f-a2c3-87f2b55b13db
+
+	measure 'CQ % YoY' = IF(OR(ISBLANK([SELLOUT(QTD-4)]), ISBLANK([SELLOUT(QTD)])), 0, [SELLOUT(QTD)] / [SELLOUT(QTD-4)]-1)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: c0d446a8-7d77-4253-a9ba-cce6c5ed8cc6
+
+	measure 'SO LINE (QTD-4)' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-5", "QTD-4")
+			return
+			CALCULATE(
+				CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Quarter To Date] = vQTD),
+				FILTER(
+					ALLSELECTED('Time'[Week Number in Quarter]),
+					ISONORAFTER('Time'[Week Number in Quarter], MAX('Time'[Week Number in Quarter]), DESC)
+				)
+			)
+			```
+		lineageTag: d7eea924-6e99-4a97-ba97-144e197dcd81
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Current Year Label' =
+			
+			"Current Year or YTD is referring to " & CALCULATE(MAX('Time'[Fiscal Year]),'Time'[Fiscal Year To Date]="YTD") & " and YoY/QoQ compares considering data through " & 'Measure Table'[MWN_Y]
+		lineageTag: 014f0796-93b8-44e7-9776-932056c51146
+
+	measure MWN_Y =
+			VAR MWN = Calculate(MAX('Time'[Fiscal Week Number]),'Time'[Fiscal Year To Date]="YTD")
+			return MWN - 1
+		formatString: 0
+		lineageTag: 3735929d-037e-4157-8656-9ca8d34590bd
+
+	measure 'SO LINE (YTD)' =
+			
+			CALCULATE(
+				CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Year To Date]="YTD"),
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Week Number]),
+					ISONORAFTER('Time'[Fiscal Week Number], MAX('Time'[Fiscal Week Number]), DESC)
+				)
+			)
+		lineageTag: 676a1e2b-04c7-4586-838c-78ffadd59b90
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SO LINE (YTD-1)' =
+			
+			CALCULATE(
+				CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Year To Date]="YTD-1"),
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Week Number]),
+					ISONORAFTER('Time'[Fiscal Week Number], MAX('Time'[Fiscal Week Number]), DESC)
+				)
+			)
+		lineageTag: 6f43a92f-b0d0-4a01-b49e-d5273dc2651a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CY SO' =
+			
+			VAR MWN = 'Measure Table'[MWN_Y]
+			return
+			CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Year To Date]="YTD",'Time'[Fiscal Week Number]<=MWN)
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		lineageTag: 8d7a5f11-717b-4f4f-9515-9f98093149c1
+
+	measure 'PY SO' =
+			
+			VAR MWN = [MWN_Y]
+			return
+			CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Year To Date]="YTD-1",'Time'[Fiscal Week Number]<=MWN)
+		lineageTag: 046e32fd-2091-438b-947d-7c04770d4b8d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YTD YoY %' = IF(ISBLANK([CY SO]),"NA",[CY SO] / [PY SO] - 1)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 0a9f2c31-e451-4b14-b2ad-b1c1d7cb30e3
+
+	measure 'Active Partner Count' = ```
+			
+			CALCULATE ( 
+			    DISTINCTCOUNTNOBLANK(BuyerPartner[Buyer Siebel HQ PPID]), 
+			    FILTER (
+			        VALUES(BuyerPartner[Buyer Siebel HQ PPID]),
+			        CALCULATE(SUM('FACT'[TCM Net USD])) > 0 
+			    )
+			)
+			```
+		formatString: 0
+		lineageTag: 4f2da80e-92aa-45b5-9910-89b6ed3c4e00
+
+	measure 'Active Partner Count Target' = ```
+			
+			CALCULATE ( 
+			    DISTINCTCOUNTNOBLANK('Focus Partners'[Buyer Siebel HQ PPID]),
+			        FILTER (
+			            VALUES ('Focus Partners'[Buyer Siebel HQ PPID]),
+			            CALCULATE ( SUM('FACT'[TCM Net USD] ) > 0
+			        )
+			    )
+			) * .9
+			```
+		formatString: 0
+		lineageTag: d500490b-ff84-4712-9606-0b7c464af0e6
+
+	measure 'Active Partner Count with 4+ deals' = ```
+			
+			CALCULATE ( 
+			    DISTINCTCOUNTNOBLANK('Focus Partners'[Buyer Siebel HQ PPID]),
+			    FILTER (
+			        VALUES ('Focus Partners'[Buyer Siebel HQ PPID]),
+			        CALCULATE(SUM('FACT'[TCM Net USD] ) > 0, 'Deal Bracket Table'[Deal Bracket]<>"1-3"
+			        )
+			    )
+			)
+			```
+		formatString: 0
+		lineageTag: 712a8f0e-462b-4664-80b0-61ae45b89ab8
+
+	measure 'Alletra Deal Count' = CALCULATE(DISTINCTCOUNT('FACT'[Pricing Prgm Deal]), CurrentProductHierarchy[Alletra Total (BU_Def)] = "Alletra")
+		formatString: 0
+		lineageTag: f9ef0548-ec17-4ba1-b8fe-51cdfb7bce58
+
+	measure 'Alletra Goal Attainment' = [Active Partner Count with 4+ deals]/[Active Partner Count Target]
+		formatString: 0%;-0%;0%
+		lineageTag: a5efd905-c0cc-4862-b871-986724f0c76d
+
+	measure 'Alletra Sellout' = CALCULATE(SUM('FACT'[TCM Net USD]), CurrentProductHierarchy[Alletra Total (BU_Def)] = "Alletra")
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: e8310701-f3cc-4d65-b9c1-3ea3cfcf163d
+
+	measure 'Alletra vs Primary Mix' = [Alletra Sellout] / ([Rest of Primary Storage TCM] + [Alletra Sellout])
+		formatString: 0%;-0%;0%
+		lineageTag: bc058d89-5581-450b-96f9-9e75d56af797
+
+	measure 'Rest of Primary Storage Deal Count' = CALCULATE(DISTINCTCOUNT('FACT'[Pricing Prgm Deal]), CurrentProductHierarchy[Alletra Total (BU_Def)] = "Nimble Storage" || CurrentProductHierarchy[Alletra Total (BU_Def)]="Primera" || CurrentProductHierarchy[Alletra Total (BU_Def)]="3PAR")
+		formatString: 0
+		lineageTag: 4978f73d-6cc0-4235-860f-7ae898a5952b
+
+	measure 'Rest of Primary Storage TCM' = CALCULATE(SUM('FACT'[TCM Net USD]), CurrentProductHierarchy[Alletra Total (BU_Def)]="Nimble Storage" || CurrentProductHierarchy[Alletra Total (BU_Def)] = "Primera" ||CurrentProductHierarchy[Alletra Total (BU_Def)] = "3PAR")
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: cc41c831-b86a-49e1-8b76-7e90524ff693
+
+	measure 'Total Storage Sellout' = SUM('FACT'[TCM Net USD])
+		lineageTag: 8e119294-0a3c-49f2-8cd6-1f90d11b6c8b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ALLETRA FY24 COMMIT$_cw' = CALCULATE(sum(Pipeline[Est_Rev]),Pipeline[Opportunity Forecast Category]="COMMIT",Pipeline[Pipeline_WoW_Compare]="CurrentWeek", CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year To Date]="YTD")
+		lineageTag: 30d85c71-933a-4a03-9349-a5000ddbd525
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ALLETRA FY24 PIPE$_cw' = CALCULATE(sum(Pipeline[Est_Rev]),Pipeline[Opportunity Forecast Category]="PIPELINE",Pipeline[Pipeline_WoW_Compare]="CurrentWeek", CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year To Date]="YTD")
+		lineageTag: 1dfc21da-ac9e-473c-98c8-222f9d4c4410
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ALLETRA FY24 TOTAL PIPE$' = CALCULATE([TOTALPIPELINE$_cw],CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year To Date]="YTD")
+		lineageTag: 07d4ab9a-6695-4503-86da-7b5b5aa9df11
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TOTALPIPELINE$_cw = ```
+			calculate([WON$_cw] + [COMMIT$_cw] + [UPSIDE$_cw] + [PIPE$_cw]) 
+			```
+		lineageTag: b5852471-b51d-4a44-9368-86d3eb64555c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure WON$_cw = calculate(sum(Pipeline[Est_Rev]),Pipeline[Opportunity Forecast Category]="WON", Pipeline[Pipeline_WoW_Compare]="CurrentWeek")
+		lineageTag: 4104b022-2c3f-44ff-b9a6-045ec12db501
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure COMMIT$_cw = CALCULATE(sum(Pipeline[EST_REV]),Pipeline[Opportunity Forecast Category]="COMMIT",Pipeline[Pipeline_WoW_Compare]="CurrentWeek")
+		lineageTag: f521481a-f1b8-41d7-b58c-2afac74bb50b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure PIPE$_cw = calculate(sum(Pipeline[EST_REV]),Pipeline[Opportunity Forecast Category]="PIPELINE",Pipeline[Pipeline_WoW_Compare]="CurrentWeek")
+		lineageTag: d3e61629-8295-418a-9b8c-7f71f8817919
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure UPSIDE$_cw = CALCULATE(sum(Pipeline[EST_REV]),Pipeline[Opportunity Forecast Category]="UPSIDE",Pipeline[Pipeline_WoW_Compare]="CurrentWeek")
+		lineageTag: 59102075-2af2-4264-adeb-b702e6abf4b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ALLETRA FY24 UPSIDE$_cw' = CALCULATE(sum(Pipeline[EST_REV]),Pipeline[Opportunity Forecast Category]="UPSIDE",Pipeline[Pipeline_WoW_Compare]="CurrentWeek", CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year To Date]="YTD")
+		lineageTag: 8a2f3803-b3d4-4e23-992f-3bd6a3af0c11
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ALLETRA FY24 WON$_cw' = CALCULATE(sum(Pipeline[EST_REV]),Pipeline[Opportunity Forecast Category]="Won",Pipeline[Pipeline_WoW_Compare]="CurrentWeek", CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year To Date]="YTD")
+		lineageTag: 401ec384-c63c-494c-833d-fbc814e4d600
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CQ Ranger' = CALCULATE([SELLOUT(QTD)],'Ranger Reseller'[Ranger Y/N]="Y")
+		lineageTag: b7a813cd-8891-416e-bbd7-cc4592dc4027
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Cov_Ranger = [CQ Ranger]/[SELLOUT(QTD)]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 3848851c-9161-4014-87d0-f34077c744e9
+
+	measure Cov_Non_Ranger = [CQ Non Ranger]/[SELLOUT(QTD)]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: ed66035a-246e-488f-9a68-f5413a056854
+
+	measure 'CQ Non Ranger' = CALCULATE([SELLOUT(QTD)],'Ranger Reseller'[Ranger Y/N]<>"Y")
+		lineageTag: 60d4b5d2-f28e-49ea-b8d5-610c0e882b4e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CY Ranger SO' = CALCULATE([CY SO],'Ranger Reseller'[Ranger Y/N]="Y")
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		lineageTag: 898ba0df-7f0b-443e-8f80-99903c6b124a
+
+	measure 'YTD YoY % Ranger' = IF(ISBLANK([CY Ranger SO]),"NA",[CY Ranger SO] / CALCULATE([PY SO],'Ranger Reseller'[Ranger Y/N]="Y") - 1)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: f30f1037-d030-4aa2-9bc8-f05f3a35c555
+
+	measure 'YTD YoY $ Ranger' = IF(ISBLANK([CY Ranger SO]),"NA",[CY Ranger SO] - CALCULATE([PY SO],'Ranger Reseller'[Ranger Y/N]="Y"))
+		lineageTag: d70a6ae9-35a6-4830-8158-aae981b91eb4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Cov_Ranger_YTD = [CY Ranger SO] / [CY SO]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 8125de18-c82a-4ab8-98f4-7513f487e65e
+
+	measure Cov_Non_Ranger_YTD = [CY Non-Ranger SO] / [CY SO]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 98500276-ea1e-4b27-815d-a0fbe9f9ee97
+
+	measure 'CY Non-Ranger SO' = CALCULATE([CY SO],'Ranger Reseller'[Ranger Y/N]<>"Y")
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 28a32070-95eb-4af4-bf7f-0f64b8bb9804
+
+	measure '# of Total Partners running total in Fiscal Month' =
+			
+			CALCULATE(
+				DISTINCTCOUNTNOBLANK(BuyerPartner[Buyer Siebel HQ PPID]), 'FACT'[TCM Net USD] > 0,
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Month]),
+					ISONORAFTER('Time'[Fiscal Month], MAX('Time'[Fiscal Month]), DESC)
+				)
+			)
+		formatString: 0
+		lineageTag: 8b0ec0c8-af40-4991-89e8-00ea7bad6ac6
+
+	measure 'Running total in Fiscal Month' =
+			
+			CALCULATE(
+				[Repeat Resellers],
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Month]),
+					ISONORAFTER('Time'[Fiscal Month], MAX('Time'[Fiscal Month]), DESC)
+				)
+			)
+		formatString: 0
+		lineageTag: 6ae060ad-4857-4c3a-97c3-0d636d24fde6
+
+	measure 'Repeat Resellers' = SUMX(VALUES(BuyerPartner[Buyer Siebel HQ PPID]), IF([# EU Cumulative] > 1, 1, 0))
+		formatString: 0
+		lineageTag: cd6af6b1-f5e4-4c3b-9716-b05eba85b68b
+
+	measure '# EU Cumulative' =
+			
+			CALCULATE(DISTINCTCOUNTNOBLANK('FACT'[DEC OPSI ID]),
+			    FILTER(
+			        ALLSELECTED('Time'[Fiscal Month]),
+			        'Time'[Fiscal Month] <= MAX('Time'[Fiscal Month])
+			        )
+			    )
+		formatString: 0
+		lineageTag: bed68604-6525-4dd0-9208-b795913f542e
+
+	measure 'YTD Alletra SO running total in Fiscal Month' =
+			
+			CALCULATE(
+			    [YTD Alletra SO],
+			    FILTER(
+					ALLSELECTED('Time'[Fiscal Month]),
+					ISONORAFTER('Time'[Fiscal Month], MAX('Time'[Fiscal Month]), DESC)
+				)
+			)
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		lineageTag: 3b18ed5c-5f88-457d-93fb-66d09ea5bdc6
+
+	measure 'YTD Alletra SO' =
+			
+			VAR MWN = 'Measure Table'[MWN_Y]
+			return
+			CALCULATE(SUM('FACT'[TCM Net USD]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year To Date]="YTD",'Time'[Fiscal Week Number]<=MWN)
+		lineageTag: 3447df7e-bd5a-41da-bc9a-37943a2aee1e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Alletra SBP % of Count Target' = IFERROR('Measure Table'[# of Total Partners running total in Fiscal Month] / SUM(SBP_Ramp_Targets[Partner Count Target]),"N/A")
+		formatString: 0%;-0%;0%
+		lineageTag: f5394195-b0f4-4985-a84b-74a90907f589
+
+	measure 'Active % Target P&G' = 1
+		formatString: 0%;-0%;0%
+		lineageTag: 47666709-7b27-4d95-82ce-1f0897318dce
+
+	measure 'SBP Alletra Target Growth' = SUM(SBP_Ramp_Targets[Partner Count Target])
+		formatString: 0
+		lineageTag: 64c3ff18-88f7-431a-ba7b-2fc0717aa5f1
+
+	measure 'Alletra SBP % of Target' = [YTD Alletra SO] / SUM(SBP_Ramp_Targets[Alletra Sellout Target])
+		formatString: 0%;-0%;0%
+		lineageTag: 6dd4346a-9734-480e-aefc-be8807962869
+
+	measure 'WW SBP $ Target' = SUM(SBP_Ramp_Targets[Alletra Sellout Target])
+		formatString: 0
+		lineageTag: b659898b-1175-4774-8418-0ee5fa6d1863
+
+	measure 'AVG Deal Size - Sellout' = [TCM Net USD running total in Fiscal Month] / [# of Deals V3 running total in Fiscal Month]
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		lineageTag: 368be6d0-ebc7-4a02-8afd-0862116a5001
+
+	measure 'TCM Net USD running total in Fiscal Month' =
+			
+			CALCULATE(
+				SUM('FACT'[TCM Net USD]),
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Month]),
+					ISONORAFTER('Time'[Fiscal Month], MAX('Time'[Fiscal Month]), DESC)
+				)
+			)
+		lineageTag: 3d9d6767-f1f9-480e-86a5-ffa940be588c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '# of Deals V3 running total in Fiscal Month' =
+			
+			CALCULATE(
+				[# of Deals V3],
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Month]),
+					ISONORAFTER('Time'[Fiscal Month], MAX('Time'[Fiscal Month]), DESC)
+				)
+			)
+		formatString: 0
+		lineageTag: 110830e2-eec3-44a6-8332-8c83dad3f02b
+
+	measure '# of Deals V3' = SUMX(VALUES(BuyerPartner[Buyer Siebel HQ PPID]),[# EU Cumulative])
+		formatString: 0
+		lineageTag: 8cce86f2-d4a2-4184-b38c-4c8ec2167f94
+
+	measure SELLOUT = CALCULATE(SUM('FACT'[TCM Net USD]))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 05835f79-9bbf-4cc7-b363-a131f4af5b6c
+
+	measure 'CQ Partner Count YoY' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-1", "QTD")
+			    VAR vQTD4 = IF(MWN >= 13 || MWN <= 2, "QTD-5", "QTD-4")
+			RETURN
+			IF(OR(ISBLANK(CALCULATE([Active Partner Count],'Time'[Fiscal Quarter To Date]= vQTD)), ISBLANK(Calculate([Active Partner Count],'Time'[Fiscal Quarter To Date] = vQTD4,'Time'[Week Number in Quarter]<=MWN))), 0,
+			DIVIDE(Calculate([Active Partner Count],'Time'[Fiscal Quarter To Date] = vQTD,'Time'[Week Number in Quarter]<=MWN), 
+			Calculate([Active Partner Count],'Time'[Fiscal Quarter To Date] = vQTD4,'Time'[Week Number in Quarter]<=MWN), 0)-1)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 612031cb-63d3-4ff3-b515-c460d30c8d7e
+
+	measure 'CQ Partner Count QoQ' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			Return 
+			    IF(
+			        ISBLANK([Active Partner Count QTD]), 0, CALCULATE([Active Partner Count QTD] / [Active Partner Count QTD - 1], 'Time'[Week Number in Quarter] <= MWN)- 1
+			    )
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: e1555e73-f0ca-4af0-86c9-c3aca2ab0e15
+
+	measure 'Partner Breadth' = DIVIDE([SELLOUT], [Active Partner Count], 0)
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 0f244ef0-27e1-41e3-bee1-5ead400a4cbd
+
+	measure 'Active Partner Count QTD' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-1", "QTD")
+			RETURN
+			CALCULATE([Active Partner Count], 'Time'[Fiscal Quarter To Date] = vQTD)
+			```
+		formatString: 0
+		lineageTag: a38e3d0f-1dc3-4e76-b0e5-c6da0e71d454
+
+	measure 'Active Partner Count QTD - 1' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-2", "QTD-1")
+			RETURN
+			CALCULATE([Active Partner Count], 'Time'[Fiscal Quarter To Date] = vQTD)
+			```
+		formatString: 0
+		lineageTag: 7b5f6d4c-d6a0-4441-968d-1a09d9650544
+
+	measure 'CQ % YoY Ranger' = [CQ Ranger] / CALCULATE([SELLOUT(QTD-4)],'Ranger Reseller'[Ranger Y/N]="Y")-1
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 1ae0dc79-07a2-4d9f-8ac2-566178a6ef71
+
+	measure 'CQ $ YoY Ranger' = IF(ISBLANK(CALCULATE([SELLOUT(QTD-4)],'Ranger Reseller'[Ranger Y/N]="Y")),"NA",[CQ Ranger] - CALCULATE([SELLOUT(QTD-4)],'Ranger Reseller'[Ranger Y/N]="Y"))
+		lineageTag: a712da5f-8192-4643-a1f7-67e4e7ba890f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Disc. Buyer. Siebel HQ PPID' = DISTINCTCOUNTNOBLANK(BuyerPartner[Buyer Siebel HQ PPID])
+		formatString: 0
+		lineageTag: 58a7875e-14f7-44bf-b2f8-b0ecf78a7ef3
+
+	measure 'Oppty Count FY23Q1' = ```
+			
+			    CALCULATE(DISTINCTCOUNT(Pipeline[Opportunity Identifier]),'TIME BRIDGE'[Fiscal Quarter To Date]="QTD-4",Pipeline[Pipeline_WoW_Compare]="CurrentWeek")
+			```
+		formatString: #,0
+		lineageTag: 2c7c324c-e2b8-491e-a569-4742155c571d
+
+	measure 'Oppty Count FY23Q4' = ```
+			
+			    CALCULATE(DISTINCTCOUNT(Pipeline[Opportunity Identifier]),'TIME BRIDGE'[Fiscal Quarter To Date]="QTD-1",Pipeline[Pipeline_WoW_Compare]="CurrentWeek")
+			```
+		formatString: #,0
+		lineageTag: 6751a0bc-8d06-446f-a6fd-6dd81e5c4ac5
+
+	measure 'Oppty Count FY24Q1' = ```
+			
+			    CALCULATE(DISTINCTCOUNT(Pipeline[Opportunity Identifier]),'TIME BRIDGE'[Fiscal Quarter To Date]="QTD",Pipeline[Pipeline_WoW_Compare]="CurrentWeek")
+			```
+		formatString: #,0
+		lineageTag: f2c0cd97-335f-4c59-838b-30c07a180c30
+
+	measure 'Oppty Count FY24Q1 QoQ%' = [Oppty Count FY24Q1]/[Oppty Count FY23Q4]-1
+		formatString: 0%;-0%;0%
+		lineageTag: d87ecb11-acd4-4900-ab70-ad3a85b970f0
+
+	measure 'Oppty Count FY24Q1 YoY%' = [Oppty Count FY24Q1]/[Oppty Count FY23Q1]-1
+		formatString: 0%;-0%;0%
+		lineageTag: 6e9ef480-454d-4ff8-a779-1abe5e08d947
+
+	measure 'Alletra Activation Rate running total in Fiscal Month' =
+			
+			CALCULATE(
+				[Alletra Activation Rate (Line)],
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Month]),
+					ISONORAFTER('Time'[Fiscal Month], MAX('Time'[Fiscal Month]), DESC)
+				)
+			)
+		formatString: 0%;-0%;0%
+		lineageTag: d144d587-fe76-425f-9d9d-5cd79b1fb76c
+
+	measure 'Alletra Activation Rate' = DIVIDE(DISTINCTCOUNT('Consolidated Cube (All Geos)'[Buyer Siebel HQ PPID]), [# of Total Partners running total in Fiscal Month])
+		formatString: 0%;-0%;0%
+		lineageTag: 1c5e2283-a402-4d87-9f2c-53336c253e79
+
+	measure 'Pipe Active Parner Count' = ```
+			
+			CALCULATE ( 
+			    DISTINCTCOUNTNOBLANK('Pipeline'[Primary Channel Partner Locator Identifier]),
+			    FILTER (
+			        VALUES('Pipeline'[EST_REV]),
+			        SUM('Pipeline'[EST_REV]) > 0
+			    )
+			)
+			```
+		formatString: 0
+		lineageTag: 083979fc-59d2-4a68-9b77-75b12825ba86
+
+	measure 'Active Partner Count running total in Fiscal Week Number' =
+			
+			CALCULATE(
+				[Active Partner Count],
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Week Number]),
+					ISONORAFTER('Time'[Fiscal Week Number], MAX('Time'[Fiscal Week Number]), DESC)
+				)
+			)
+		formatString: 0
+		lineageTag: e9fee93d-1717-4f8e-824e-095e8c9dee0e
+
+	measure 'Zerto % Active (Pipe)' =
+			
+			VAR T = [Zerto Active Pipe Partner Count]
+			/ DISTINCTCOUNT(Top250PrimaryStoragePartners[Buyer Siebel HQ PPID])
+			RETURN
+			CALCULATE(
+				T,
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Week Number]),
+					ISONORAFTER('Time'[Fiscal Week Number], MAX('Time'[Fiscal Week Number]), DESC)
+				))
+		formatString: 0%;-0%;0%
+		lineageTag: 2c939be5-e7df-4602-b998-910fe3f7fd5b
+
+	measure 'Zerto Active Pipe Partner Count' =
+			
+			CALCULATE(
+			    DISTINCTCOUNTNOBLANK('Pipeline'[Primary Channel Partner Locator Identifier]),
+			    FILTER (
+			        VALUES ('Pipeline'[Primary Channel Partner Locator Identifier]),
+			        [Zerto FY24 TOTAL PIPE$] > 0
+			    )
+			)
+		formatString: 0
+		lineageTag: 031c38d7-874f-48dc-bcc0-b1b87a748bf0
+
+	measure 'Zerto FY24 TOTAL PIPE$' = CALCULATE([TOTALPIPELINE$_cw], CurrentProductHierarchy[Alletra Total (BU_Def)] = "Zerto", 'Time'[Fiscal Year To Date] = "YTD")
+		lineageTag: 0db7eda5-a942-4ce6-8798-6d6a658b9518
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Zerto % Active running total in Fiscal Week Number' =
+			
+			CALCULATE(
+				[Zerto % Active],
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Week Number]),
+					ISONORAFTER('Time'[Fiscal Week Number], MAX('Time'[Fiscal Week Number]), DESC)
+				)
+			)
+		formatString: 0%;-0%;0%
+		lineageTag: 34d7a8ff-c48f-4a76-a2fb-9ede19de44c3
+
+	measure 'Zerto % Active' =
+			
+			[Active Partner Count]
+			/ DISTINCTCOUNT(Top250PrimaryStoragePartners[Buyer Siebel HQ PPID])
+		formatString: 0%;-0%;0%
+		lineageTag: b67b2ef7-a7f5-4b15-bf1d-49987cb4721d
+
+	measure 'Zerto Active Pipe Partner Count running total in Fiscal Week Number' =
+			
+			CALCULATE(
+				[Zerto Active Pipe Partner Count],
+				FILTER(
+					ALLSELECTED('Time'[Fiscal Week Number]),
+					ISONORAFTER('Time'[Fiscal Week Number], MAX('Time'[Fiscal Week Number]), DESC)
+				)
+			)
+		formatString: 0
+		lineageTag: f7921d40-9fd9-47f5-b9c8-56d449d88d26
+
+	measure 'Zerto Active Partner Count' = Calculate([Active Partner Count],CurrentProductHierarchy[Current L3 Product SubGroup]="ZERTO")
+		formatString: 0
+		lineageTag: 215b8cfc-d02f-4ff8-b34b-6607b6d8efb4
+
+	measure 'Zerto Sellout' = CALCULATE([SELLOUT],CurrentProductHierarchy[Current L3 Product SubGroup]="Zerto")
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 8e807359-5093-4715-a81f-28d3d1a4c801
+
+	measure 'Primary Storage Sellout (Zerto)' = CALCULATE([SELLOUT],CurrentProductHierarchy[Alletra Total (BU_Def)]="3PAR"||CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra"||CurrentProductHierarchy[Alletra Total (BU_Def)]="Nimble Storage"||CurrentProductHierarchy[Alletra Total (BU_Def)]="Primera")
+		lineageTag: 84902cec-6db0-4eca-a092-b5ec93ea6dc0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Zerto FY24 UPSIDE$_cw' = CALCULATE(sum(Pipeline[EST_REV]),Pipeline[Opportunity Forecast Category]="UPSIDE",Pipeline[Pipeline_WoW_Compare]="CurrentWeek", CurrentProductHierarchy[Alletra Total (BU_Def)]="Zerto",'Time'[Fiscal Year To Date]="YTD")
+		lineageTag: 93604cc5-902f-44ea-b4f8-a4ca25b78f6b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Zerto FY24 COMMIT$_cw' = CALCULATE(sum(Pipeline[EST_REV]),Pipeline[Opportunity Forecast Category]="COMMIT",Pipeline[Pipeline_WoW_Compare]="CurrentWeek", CurrentProductHierarchy[Alletra Total (BU_Def)]="Zerto",'Time'[Fiscal Year To Date]="YTD")
+		lineageTag: 52ea896d-2ec6-4ca8-b943-fad2ab3996c7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Zerto FY24 PIPE$_cw' = CALCULATE(sum(Pipeline[EST_REV]),Pipeline[Opportunity Forecast Category]="PIPELINE",Pipeline[Pipeline_WoW_Compare]="CurrentWeek", CurrentProductHierarchy[Alletra Total (BU_Def)]="Zerto",'Time'[Fiscal Year To Date]="YTD")
+		lineageTag: 9555063d-e16b-4ce9-b732-bf8f015534a1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Zerto FY24 WON$_cw' = CALCULATE(sum(Pipeline[EST_REV]),Pipeline[Opportunity Forecast Category]="WON",Pipeline[Pipeline_WoW_Compare]="CurrentWeek", CurrentProductHierarchy[Alletra Total (BU_Def)]="Zerto",'Time'[Fiscal Year To Date]="YTD")
+		lineageTag: b22d42df-ab68-4b50-a9c1-306b4c2ca1ca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Zerto Active Pipe or Sales Partner Count' =
+			
+			CALCULATE(DISTINCTCOUNTNOBLANK('ZERTO TEST TABLE'[Buyer Siebel HQ PPID]), OR('ZERTO TEST TABLE'[FY24 Zerto Pipe] > 0, 'ZERTO TEST TABLE'[FY24 Zerto Sellout] > 0))
+			
+			// IF([Zerto Active Partner Count]+[Zerto Active Pipe Partner Count] >= 1,1,0)))
+		formatString: 0
+		lineageTag: 5a9a2838-76aa-4f34-ba19-0258355e3076
+
+	measure 'Top250 Zerto %Target' = 1
+		formatString: 0%;-0%;0%
+		lineageTag: 673b723a-0588-4ebe-b4db-c3aad0893cd2
+
+	measure 'Top250 Zerto Target' = DISTINCTCOUNTNOBLANK(Top250PrimaryStoragePartners[Buyer Siebel HQ PPID])
+		formatString: 0
+		lineageTag: f17f98ac-6f91-410a-8694-c52e12a29095
+
+	measure 'Zerto FY24 Target' = 1000000
+		formatString: 0
+		lineageTag: 8679b8ea-01b7-4827-8161-cd660103bc56
+
+	measure 'Pipe CQ Active Parner Count' = ```
+			
+			CALCULATE ( 
+			    DISTINCTCOUNTNOBLANK('Pipeline'[Primary Channel Partner Locator Identifier]),
+			    FILTER (
+			        VALUES ('Pipeline'[EST_REV]),
+			        CALCULATE(SUM('Pipeline'[EST_REV]),'TIME BRIDGE'[Fiscal Quarter To Date]="QTD") > 0
+			    )
+			)
+			```
+		formatString: #,0
+		lineageTag: 627b059f-b92e-4680-8746-0c27ea745de0
+
+	measure 'QTD Label' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-1", "QTD")
+			RETURN
+			LEFT(CALCULATE(MAX('Time'[Fiscal Quarter]),'Time'[Fiscal Quarter To Date]=vQTD),2) & MID(CALCULATE(MAX('Time'[Fiscal Quarter]),'Time'[Fiscal Quarter To Date]=vQTD),5,2) & RIGHT(CALCULATE(MAX('Time'[Fiscal Quarter]),'Time'[Fiscal Quarter To Date]=vQTD),2) & " Sellout"
+			```
+		lineageTag: 2a8ab917-cbac-4eb1-bf51-a38d64887b65
+
+	measure 'QTD Active Partner Label' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-1", "QTD")
+			RETURN
+			LEFT(CALCULATE(MAX('Time'[Fiscal Quarter]),'Time'[Fiscal Quarter To Date]=vQTD),2) & MID(CALCULATE(MAX('Time'[Fiscal Quarter]),'Time'[Fiscal Quarter To Date]=vQTD),5,2) & RIGHT(CALCULATE(MAX('Time'[Fiscal Quarter]),'Time'[Fiscal Quarter To Date]=vQTD),2) & " Act. Partners"
+			```
+		lineageTag: 056f2651-9247-48c6-b24c-79fe7dbbd31d
+
+	measure 'SO LINE (QTD)' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-1", "QTD")
+			return 
+			CALCULATE(
+				CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Quarter To Date] = vQTD),
+				FILTER(
+					ALLSELECTED('Time'[Week Number in Quarter]),
+					ISONORAFTER('Time'[Week Number in Quarter], MAX('Time'[Week Number in Quarter]), DESC)
+				)
+			)
+			```
+		lineageTag: 9ba45aff-f1e7-4854-902a-74a124b073ce
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SO LINE (QTD-1)' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-2", "QTD-1")
+			return
+			CALCULATE(
+				CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Quarter To Date] = vQTD),
+				FILTER(
+					ALLSELECTED('Time'[Week Number in Quarter]),
+					ISONORAFTER('Time'[Week Number in Quarter], MAX('Time'[Week Number in Quarter]), DESC)
+				)
+			)
+			```
+		lineageTag: d1fd2e80-c0ac-4cf0-a9d8-9c0cceff00aa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SO LINE (QTD-2)' = ```
+			
+			    VAR MWN = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(MWN >= 13 || MWN <= 2, "QTD-3", "QTD-2")
+			return 
+			CALCULATE(
+				CALCULATE(SUM('FACT'[TCM Net USD]),'Time'[Fiscal Quarter To Date] = vQTD),
+				FILTER(
+					ALLSELECTED('Time'[Week Number in Quarter]),
+					ISONORAFTER('Time'[Week Number in Quarter], MAX('Time'[Week Number in Quarter]), DESC)
+				)
+			)
+			```
+		lineageTag: 61e09bfc-8492-461d-8207-e28b431836da
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CQ $ YoY' = IF(ISBLANK([SELLOUT(QTD-4)]),"NA",[SELLOUT(QTD)] - [SELLOUT(QTD-4)])
+		lineageTag: 22ced45b-92ed-4043-b042-0a1c3acac34c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CQ % YoY Non-Ranger' = [CQ Non Ranger] / CALCULATE([SELLOUT(QTD-4)],'Ranger Reseller'[Ranger Y/N]<>"Y")-1
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d09a1ec1-4a86-4ed4-aee5-14de2b82beb9
+
+	measure 'YTD YoY $' = IF(ISBLANK([CY SO]),"NA",[CY SO] - [PY SO])
+		lineageTag: 134fbd4e-cdcb-44f8-bdad-2ab978651062
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YTD YoY % Non-Ranger' = IF(ISBLANK([CY Non-Ranger SO]),"NA",[CY Non-Ranger SO] / CALCULATE([PY SO],'Ranger Reseller'[Ranger Y/N]<>"Y") - 1)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 07347076-4a3b-45b8-93cd-4de89d3334fd
+
+	measure 'PY Non-Ranger SO' = CALCULATE([PY SO],'Ranger Reseller'[Ranger Y/N]<>"Y")
+		lineageTag: 094c2ff4-4ef5-4ae4-9f43-7ec9c80d25b9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Alletra Activation Rate (Line)' = DIVIDE([# of Total Partners running total in Fiscal Month], DISTINCTCOUNT('Consolidated Cube (All Geos)'[Buyer Siebel HQ PPID]))
+		lineageTag: 5cad74d5-ad51-4947-bc88-3e90da2f7cbc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Active Partner Count KPI' = ```
+			
+			    VAR vWeek = CALCULATE(MAX(Dim_RealQ_Table[Week Number in Quarter]))
+			    VAR vQTD = IF(vWeek >= 13 || vWeek <= 2, "QTD-1", "QTD")
+			RETURN
+			CALCULATE ( 
+			    DISTINCTCOUNTNOBLANK(BuyerPartner[Buyer Siebel HQ PPID]), 'Time'[Fiscal Quarter To Date] = vQTD,
+			    FILTER (
+			        VALUES(BuyerPartner[Buyer Siebel HQ PPID]),
+			        CALCULATE(SUM('FACT'[TCM Net USD])) > 0 
+			    )
+			)
+			```
+		formatString: 0
+		lineageTag: d3833811-d12a-4008-9054-eb1be7a26583
+
+	partition 'Measure Table' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Empty = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Empty", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Empty"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,89 @@
+table 'Consolidated Cube (All Geos)'
+	lineageTag: addba43e-cc0b-43da-a351-f36aea438177
+
+	column 'Buyer Siebel HQ PPID'
+		dataType: string
+		lineageTag: b8333c44-ac3a-4590-be44-d0237c9e44a7
+		summarizeBy: none
+		sourceColumn: Buyer Siebel HQ PPID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer Siebel HQ English Name'
+		dataType: string
+		lineageTag: 72d7c9d0-fb9d-4b03-85b8-476c86fe20bc
+		summarizeBy: none
+		sourceColumn: Buyer Siebel HQ English Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer HC Membership'
+		dataType: string
+		lineageTag: 231aba7f-f89c-40e5-bd1c-f5618313ac0f
+		summarizeBy: none
+		sourceColumn: Buyer HC Membership
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer Sub Region1'
+		dataType: string
+		lineageTag: 11e06921-6ead-4a82-b769-aa0d5b810199
+		summarizeBy: none
+		sourceColumn: Buyer Sub Region1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer Country'
+		dataType: string
+		lineageTag: 8b4e059f-66be-485e-9d20-aaf9f541a18d
+		summarizeBy: none
+		sourceColumn: Buyer Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Consolidated Cube Flag'
+		dataType: string
+		lineageTag: b4af0f17-3856-4f33-b238-0b0bf8d03f1f
+		summarizeBy: none
+		sourceColumn: Consolidated Cube Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Aggregate HC Membership'
+		dataType: string
+		lineageTag: ab4cddc6-33ea-41df-a731-b9500f9f9e18
+		summarizeBy: none
+		sourceColumn: Aggregate HC Membership
+
+		annotation SummarizationSetBy = Automatic
+
+	column KEY
+		dataType: string
+		lineageTag: deaa4e90-1a11-478d-ac8b-6e2fe72f348d
+		summarizeBy: none
+		sourceColumn: KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column Part_Geo_Key = 'Consolidated Cube (All Geos)'[Buyer Siebel HQ PPID] & "||" & 'Consolidated Cube (All Geos)'[Buyer Country]
+		dataType: string
+		lineageTag: 6de7a8c9-3d8b-4977-a1a6-a36c4a53236c
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Consolidated Cube (All Geos)' = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"0a7b5f16-a7a0-4dec-b187-a540545eb55f" = Workspaces{[workspaceId="0a7b5f16-a7a0-4dec-b187-a540545eb55f"]}[Data],
+				    #"c634de48-8fac-4e04-9a4e-a65495bfb41e" = #"0a7b5f16-a7a0-4dec-b187-a540545eb55f"{[dataflowId="c634de48-8fac-4e04-9a4e-a65495bfb41e"]}[Data],
+				    #"Consolidated Cube - All Geos_" = #"c634de48-8fac-4e04-9a4e-a65495bfb41e"{[entity="Consolidated Cube - All Geos",version=""]}[Data]
+				in
+				    #"Consolidated Cube - All Geos_"
+
+	annotation PBI_ResultType = Exception
+

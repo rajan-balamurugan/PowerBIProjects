@@ -1,0 +1,229 @@
+table Time
+	lineageTag: e5a0e9be-c2d3-4cee-81ae-f54e6b38f2f6
+
+	column 'Fiscal Year'
+		dataType: string
+		lineageTag: 7e69be8f-2048-42f4-af6e-38f304bcd052
+		summarizeBy: none
+		sourceColumn: Fiscal Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Quarter'
+		dataType: string
+		lineageTag: 0bf22158-5105-4260-84bc-bf4757deb1ac
+		summarizeBy: none
+		sourceColumn: Fiscal Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Month'
+		dataType: string
+		lineageTag: 47eecbb0-fd99-4ee7-a108-c0b2ce9e47d4
+		summarizeBy: none
+		sourceColumn: Fiscal Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year Week Number'
+		dataType: string
+		lineageTag: 53efe5be-74bc-42b0-a7d8-1184363ccd49
+		summarizeBy: none
+		sourceColumn: Fiscal Year Week Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Week Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 21c422f9-890c-4a4e-9e71-a8241aa40b44
+		summarizeBy: none
+		sourceColumn: Fiscal Week Number
+
+		annotation SummarizationSetBy = User
+
+	column 'Calendar Month'
+		dataType: string
+		lineageTag: 36bdb3a0-3fb1-4b97-96fa-2e2f55ea5344
+		summarizeBy: none
+		sourceColumn: Calendar Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Start Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: e298817f-a09c-4d75-9375-beac7e2e5282
+		summarizeBy: none
+		sourceColumn: Week Start Date
+
+		variation Variation
+			isDefault
+			relationship: 4f306cc1-91ed-4cfd-9aa0-1acac607f605
+			defaultHierarchy: LocalDateTable_a0842a26-84ad-4f18-bba5-ec10040362e7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week End Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9208cfc7-6733-4bf2-a581-2768259ab8fa
+		summarizeBy: none
+		sourceColumn: Week End Date
+
+		variation Variation
+			isDefault
+			relationship: 06d062dd-dd00-47a4-8022-77e2a4992311
+			defaultHierarchy: LocalDateTable_6fa21ecf-791b-4127-b538-04e30053f32c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week in Year'
+		dataType: string
+		lineageTag: 0d7e632a-3c0a-474b-a894-92ad3bedd803
+		summarizeBy: none
+		sourceColumn: Week in Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 6dc062e4-e4df-4e16-801c-9fd2c93e5d0f
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 172b60b9-01fb-45bd-8b09-15cbc74b9c28
+			defaultHierarchy: LocalDateTable_5a892d96-d9c4-49be-acc2-c1e62647b3c5.'Date Hierarchy'
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Fiscal Quarter To Date'
+		dataType: string
+		lineageTag: d4028e5a-ee82-4a6f-939e-2eebe0cba1ff
+		summarizeBy: none
+		sourceColumn: Fiscal Quarter To Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Half Year'
+		dataType: string
+		lineageTag: 606ce802-7c29-4f57-acf4-c994106e3f23
+		summarizeBy: none
+		sourceColumn: Fiscal Half Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Month To Date'
+		dataType: string
+		lineageTag: 13f2d56a-ec53-44c0-b7a7-81c3a57ac217
+		summarizeBy: none
+		sourceColumn: Fiscal Month To Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Number in Quarter'
+		dataType: int64
+		formatString: 0
+		lineageTag: b55120d9-6aa4-49ca-a859-57e49a76f7f1
+		summarizeBy: none
+		sourceColumn: Week Number in Quarter
+
+		annotation SummarizationSetBy = User
+
+	column 'Fiscal Year to Date'
+		dataType: string
+		lineageTag: 46d2b767-f46f-408b-9411-1bc01356686a
+		summarizeBy: none
+		sourceColumn: Fiscal Year to Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Week to date'
+		dataType: string
+		lineageTag: 4ae54816-e9e0-4f69-b40c-a9872b1cba2e
+		summarizeBy: none
+		sourceColumn: Fiscal Week to date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year Split Week'
+		dataType: string
+		lineageTag: aad0db10-9fd7-496f-a622-18edb9a1becb
+		summarizeBy: none
+		sourceColumn: Fiscal Year Split Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Count Of Days n Fiscal Week'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0e18128c-735a-40d4-bd2e-5bd6be287106
+		summarizeBy: sum
+		sourceColumn: Count Of Days n Fiscal Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year to Date2'
+		dataType: string
+		lineageTag: 15e30059-3014-4f69-842e-136f1d800c8a
+		summarizeBy: none
+		sourceColumn: Fiscal Year to Date2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Year Week'
+		dataType: string
+		lineageTag: b5d9e25e-2388-4667-a4f9-b94e458bb052
+		summarizeBy: none
+		sourceColumn: Calendar Year Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Year Split Week'
+		dataType: string
+		lineageTag: 09a4ebf2-0844-401f-9dcf-c283274d0813
+		summarizeBy: none
+		sourceColumn: Calendar Year Split Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Year Week Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 04462e9f-8654-4172-8b16-e7cafa7cf273
+		summarizeBy: none
+		sourceColumn: Calendar Year Week Number
+
+		annotation SummarizationSetBy = User
+
+	column 'Fiscal Quarter Number'
+		dataType: string
+		lineageTag: d2010159-14ec-4009-891d-bc6c3b99a733
+		summarizeBy: none
+		sourceColumn: Fiscal Quarter Number
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Time = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"5d8ed3c7-bec6-441c-bde7-d79738c0cb8f" = Workspaces{[workspaceId="5d8ed3c7-bec6-441c-bde7-d79738c0cb8f"]}[Data],
+				    #"5e14a931-be12-4446-a815-6af3387eaefa" = #"5d8ed3c7-bec6-441c-bde7-d79738c0cb8f"{[dataflowId="5e14a931-be12-4446-a815-6af3387eaefa"]}[Data],
+				    Time_ = #"5e14a931-be12-4446-a815-6af3387eaefa"{[entity="Time",version=""]}[Data],
+				    #"Inserted Text After Delimiter" = Table.AddColumn(Time_, "Fiscal Quarter Number", each Text.AfterDelimiter([Fiscal Quarter], "-"), type text),
+				    #"Filtered Rows" = Table.SelectRows(#"Inserted Text After Delimiter", each Date.IsInPreviousNYears([Date], 2) or Date.IsInYearToDate([Date]))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Table
+

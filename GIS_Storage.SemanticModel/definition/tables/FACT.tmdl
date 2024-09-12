@@ -1,0 +1,215 @@
+table FACT
+	lineageTag: 9ef51ce4-b22c-42af-9c45-a67d0a05be89
+
+	column 'Buyer Geo Key'
+		dataType: string
+		lineageTag: 53ec9b8e-baa0-42fe-b400-6d5ca3eb56e6
+		summarizeBy: none
+		sourceColumn: Buyer Geo Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer Partner Key'
+		dataType: string
+		lineageTag: 9bface50-3838-48f6-a5f7-f18a83591999
+		summarizeBy: none
+		sourceColumn: Buyer Partner Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Month'
+		dataType: dateTime
+		formatString: yyyy-mm
+		lineageTag: 13861e68-ea88-4532-b4e4-96c9a86e98d9
+		summarizeBy: none
+		sourceColumn: Calendar Month
+
+		variation Variation
+			isDefault
+			relationship: 6de3a11c-03e5-4ecb-b96b-30d221aa178c
+			defaultHierarchy: LocalDateTable_949eea6d-4f35-47fc-bc6e-b021b905f467.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: d7f59754-96b7-47dc-ac9b-fbe05668cb8a
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Pricing Prgm Deal'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4a0f20d8-10ca-4477-9643-cb42a0b92df9
+		summarizeBy: sum
+		sourceColumn: Pricing Prgm Deal
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Pricing Prgm Group'
+		dataType: string
+		lineageTag: a37ea935-ab09-490e-9135-6495ef1b6627
+		summarizeBy: none
+		sourceColumn: Pricing Prgm Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Pricing Prgm Name'
+		dataType: string
+		lineageTag: 9c3ac546-2455-4af6-86c4-939514fe62c7
+		summarizeBy: none
+		sourceColumn: Pricing Prgm Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TCM Flag'
+		dataType: string
+		lineageTag: 88cff96f-34aa-44c9-b778-3ad1614f423e
+		summarizeBy: none
+		sourceColumn: TCM Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TCM Net USD'
+		dataType: double
+		lineageTag: b86b4677-11fd-492c-bf0f-4586e2ec4288
+		summarizeBy: sum
+		sourceColumn: TCM Net USD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'WW Seller Flag'
+		dataType: string
+		lineageTag: e28a1e0e-92ee-4674-9e0c-a9c798e51f3b
+		summarizeBy: none
+		sourceColumn: WW Seller Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'DEC OPSI ID'
+		dataType: string
+		lineageTag: eb804cee-6af4-4b6d-8c8c-760d19152c5a
+		summarizeBy: none
+		sourceColumn: DEC OPSI ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current L6 PL'
+		dataType: string
+		lineageTag: dbd19885-1d6f-4c28-b807-21fef31668aa
+		summarizeBy: none
+		sourceColumn: Current L6 PL
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Hier Key'
+		dataType: string
+		lineageTag: 55bf1761-6252-4a6c-bf60-874de3878aee
+		summarizeBy: none
+		sourceColumn: Product Hier Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Geo Segment'
+		dataType: string
+		lineageTag: c177b80c-c458-4bdf-932c-a8b63011f39f
+		summarizeBy: none
+		sourceColumn: Geo Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column raw_drvd_ec_dim_key
+		dataType: string
+		lineageTag: 21ecab11-43b0-4ae3-8ea8-ed1a256bea03
+		summarizeBy: none
+		sourceColumn: raw_drvd_ec_dim_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Seller Geo Dim Key 1'
+		dataType: string
+		lineageTag: 556a0cbd-0afc-4200-9860-c0b6c4ddc3d5
+		summarizeBy: none
+		sourceColumn: Seller Geo Dim Key 1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Seller Partner Key'
+		dataType: string
+		lineageTag: bea820a6-994c-4909-a128-1c701172d68e
+		summarizeBy: none
+		sourceColumn: Seller Partner Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'EC Key'
+		dataType: string
+		isHidden
+		lineageTag: 3d96f3f2-d11e-4e36-b74e-2197d657846f
+		summarizeBy: none
+		sourceColumn: EC Key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column PPID = RELATED(BuyerPartner[Buyer Siebel HQ PPID])
+		dataType: string
+		lineageTag: 67cc3318-4c1f-4a4c-b8fa-e1a906213bba
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column FQTD = ```
+			RELATED('Time'[Fiscal Quarter To Date]) 
+			```
+		dataType: string
+		lineageTag: daae3bf1-928f-48e7-a8ab-22a9ee749446
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column WNinQ = RELATED('Time'[Week Number in Quarter])
+		dataType: int64
+		formatString: 0
+		lineageTag: 18976364-1b47-4260-a8c1-c1b8d21412f1
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column Geo_Parter_Key = 'FACT'[Buyer Geo Key] & "||" & 'FACT'[Buyer Partner Key]
+		dataType: string
+		lineageTag: 8206a30f-1d22-468c-83a4-72522fbbc45f
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FACT = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows([]),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"0a7b5f16-a7a0-4dec-b187-a540545eb55f" = Workspaces{[workspaceId="0a7b5f16-a7a0-4dec-b187-a540545eb55f"]}[Data],
+				    #"c634de48-8fac-4e04-9a4e-a65495bfb41e" = #"0a7b5f16-a7a0-4dec-b187-a540545eb55f"{[dataflowId="c634de48-8fac-4e04-9a4e-a65495bfb41e"]}[Data],
+				    FACT_ = #"c634de48-8fac-4e04-9a4e-a65495bfb41e"{[entity="FACT",version=""]}[Data]
+				in
+				    FACT_
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,63 @@
+table 'PARTNER GEO BRIDGE'
+	lineageTag: 2ad764aa-8e47-4793-9656-25c24edea35c
+
+	column Geo_Parter_Key
+		dataType: string
+		lineageTag: 73fd8761-307d-4a36-904c-638aac9734bf
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: FACT[Geo_Parter_Key]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer Geo Key'
+		dataType: string
+		lineageTag: 0dc7e2e5-ba62-446a-8def-6d04eb49278e
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: FACT[Buyer Geo Key]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer Partner Key'
+		dataType: string
+		lineageTag: bad15607-2fc1-40ce-81fb-92e9f324ed02
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: FACT[Buyer Partner Key]
+
+		annotation SummarizationSetBy = Automatic
+
+	column PPID = RELATED(BuyerPartner[Buyer Siebel HQ PPID])
+		dataType: string
+		lineageTag: 999092a9-7b0e-4793-a1fe-6b316c926e8a
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column BuyerCountry = RELATED(BuyerGeo[Buyer Country])
+		dataType: string
+		lineageTag: ad46c640-9d70-436e-8249-ab44fb538d87
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column Part_Geo_Key = 'PARTNER GEO BRIDGE'[PPID] & "||" & 'PARTNER GEO BRIDGE'[BuyerCountry]
+		dataType: string
+		lineageTag: 43a1138b-6251-4bc5-ae7b-4e6472229494
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'PARTNER GEO BRIDGE' = calculated
+		mode: import
+		source = SUMMARIZE('FACT', 'FACT'[Geo_Parter_Key], 'FACT'[Buyer Geo Key], 'FACT'[Buyer Partner Key])
+
+	annotation PBI_Id = af23409a87454fd98e4619d82f544303
+

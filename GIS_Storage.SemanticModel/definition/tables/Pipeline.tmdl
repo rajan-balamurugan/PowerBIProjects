@@ -1,0 +1,304 @@
+table Pipeline
+	lineageTag: 9322a27c-0cc1-4d3b-acfa-2c00651cf454
+
+	column 'Opportunity Identifier'
+		dataType: string
+		lineageTag: d3649fff-a607-4e11-8667-81ecf6e6d876
+		summarizeBy: none
+		sourceColumn: Opportunity Identifier
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Primary Channel Partner Locator Identifier'
+		dataType: string
+		lineageTag: 78dec28b-d1bb-4784-b9f6-1849e2cb0a16
+		summarizeBy: none
+		sourceColumn: Primary Channel Partner Locator Identifier
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Opportunity Close Fiscal Year Quarter Display Code'
+		dataType: string
+		lineageTag: 6a17604f-9b6a-443f-b4a4-a63d137c9cdd
+		summarizeBy: none
+		sourceColumn: Opportunity Close Fiscal Year Quarter Display Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Opportunity Forecast Category'
+		dataType: string
+		lineageTag: 4a2a15c0-9ccd-4d1f-910d-06adcab9fe4f
+		summarizeBy: none
+		sourceColumn: Opportunity Forecast Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityRecordType
+		dataType: string
+		lineageTag: 82800539-f52c-4460-80a0-94d03e6a7df9
+		summarizeBy: none
+		sourceColumn: OpportunityRecordType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Area Code'
+		dataType: string
+		lineageTag: d06d7088-57d7-43dc-8614-83d524f7ba50
+		summarizeBy: none
+		sourceColumn: Business Area Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level_4_Description
+		dataType: string
+		lineageTag: bdd6462e-18ab-4e47-b3c2-0c251e821ad0
+		summarizeBy: none
+		sourceColumn: Level_4_Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level_3_Description
+		dataType: string
+		lineageTag: dd1203da-0077-48cf-8884-e88a9385bad1
+		summarizeBy: none
+		sourceColumn: Level_3_Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Opportunity Go To Market'
+		dataType: string
+		lineageTag: f93dd158-e63e-403a-a0fe-adaab94523f5
+		summarizeBy: none
+		sourceColumn: Opportunity Go To Market
+
+		annotation SummarizationSetBy = Automatic
+
+	column Time_Stamp
+		dataType: string
+		lineageTag: 15e8bd31-e208-4317-9f98-2e4408380ef5
+		summarizeBy: none
+		sourceColumn: Time_Stamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Days in Open Sales Stages'
+		dataType: double
+		formatString: 0
+		lineageTag: 0366a48d-7dc3-49bb-993f-233ffc00d454
+		summarizeBy: sum
+		sourceColumn: Total Days in Open Sales Stages
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Coverage Segment desc'
+		dataType: string
+		lineageTag: 48abedfc-2081-4cd6-b1cc-e2e00affae21
+		summarizeBy: none
+		sourceColumn: Coverage Segment desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pipeline_WoW_Compare = ```
+			if(Pipeline[Last Characters] = MAX(Pipeline[Last Characters]), "CurrentWeek", "PreviousWeek") 
+			```
+		dataType: string
+		lineageTag: 3336f2d5-a6dc-42b1-ac26-6992284793a0
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year'
+		dataType: string
+		lineageTag: a8b44e57-8efb-4e39-b802-397cc79a1d20
+		summarizeBy: none
+		sourceColumn: Fiscal Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter_Nm
+		dataType: string
+		lineageTag: a84f9a62-9314-4b41-8a24-4a3729c59ecd
+		summarizeBy: none
+		sourceColumn: Quarter_Nm
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Days Since Last Opportunity Update' = DATEDIFF(Pipeline[Opportunity Last Update Calendar Date], TODAY(), DAY)
+		dataType: int64
+		lineageTag: 9ef8d1af-a28e-4de0-a8b8-a8cf2fe3a6bc
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Opportunity Last Update Calendar Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f5b42509-4fb9-4399-a827-2a9580f866a0
+		summarizeBy: none
+		sourceColumn: Opportunity Last Update Calendar Date
+
+		variation Variation
+			isDefault
+			relationship: 442a5040-4a02-4e11-9010-93d33b11ffff
+			defaultHierarchy: LocalDateTable_4d4322be-ff60-4f8c-a64d-c76779d05838.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column OpportunityDealRegistrationStatus
+		dataType: string
+		lineageTag: 0f9f1df8-0f23-4af9-b52a-709c8cb56b0e
+		summarizeBy: none
+		sourceColumn: OpportunityDealRegistrationStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Opportunity Status'
+		dataType: string
+		lineageTag: 2ff13e6d-47ca-4ba7-bc31-d6a7df15c0ae
+		summarizeBy: none
+		sourceColumn: Opportunity Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Level_5_Description
+		dataType: string
+		lineageTag: cf011443-b280-4898-b9a3-1e6b6043d8cc
+		summarizeBy: none
+		sourceColumn: Level_5_Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: aebc71a3-8b20-4855-a281-34381f6fc59b
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Geo
+		dataType: string
+		lineageTag: c0f15b5f-bc44-40f2-af82-b0da32c5878d
+		summarizeBy: none
+		sourceColumn: Geo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sub3
+		dataType: string
+		lineageTag: 9b1fc18b-b328-4e8e-8f66-4211fc9972ca
+		summarizeBy: none
+		sourceColumn: Sub3
+
+		annotation SummarizationSetBy = Automatic
+
+	column EST_REV
+		dataType: double
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 40746726-6e49-43e2-8498-f111290701be
+		summarizeBy: sum
+		sourceColumn: EST_REV
+
+		annotation SummarizationSetBy = Automatic
+
+	column Truesource
+		dataType: string
+		lineageTag: c56c4240-9a0f-4ce5-8f0b-f1bae0da9c2e
+		summarizeBy: none
+		sourceColumn: Truesource
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data_type
+		dataType: string
+		lineageTag: a9ba8fbf-47d2-47e4-96ff-a14e84bad1cf
+		summarizeBy: none
+		sourceColumn: Data_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: 016010fe-e43b-4eb4-8bf5-7685f9aa6726
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Primera_Partner
+		dataType: string
+		lineageTag: 0f975cb7-b4c3-4b01-909e-7fc41bf4e912
+		summarizeBy: none
+		sourceColumn: Primera_Partner
+
+		annotation SummarizationSetBy = Automatic
+
+	column L6_Description
+		dataType: string
+		lineageTag: 7362ea58-7776-40b5-9cfe-7aa00ba60d1e
+		summarizeBy: none
+		sourceColumn: L6_Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column TrueSource2
+		dataType: string
+		lineageTag: b1e66bde-93e1-482f-a5bc-b27596bb86ac
+		summarizeBy: none
+		sourceColumn: TrueSource2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last characters'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d57ba7e-698a-4eee-9104-fdf14e2b8c75
+		summarizeBy: sum
+		sourceColumn: Last characters
+
+		annotation SummarizationSetBy = Automatic
+
+	column SubGeo = LOOKUPVALUE(BuyerGeo[Buyer Sub Region1], BuyerGeo[Buyer Country], Pipeline[Sub3])
+		dataType: string
+		lineageTag: bb527abf-1754-473f-8440-58b12b6a70af
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Opportunity Name'
+		dataType: string
+		lineageTag: da47802f-2c15-4180-af3c-0e536cab59c2
+		summarizeBy: none
+		sourceColumn: Opportunity Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Primary Channel Partner Name'
+		dataType: string
+		lineageTag: e26a5282-5898-45e4-bd06-80fdfc871d77
+		summarizeBy: none
+		sourceColumn: Primary Channel Partner Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Pipeline = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"0a7b5f16-a7a0-4dec-b187-a540545eb55f" = Workspaces{[workspaceId="0a7b5f16-a7a0-4dec-b187-a540545eb55f"]}[Data],
+				    #"c634de48-8fac-4e04-9a4e-a65495bfb41e" = #"0a7b5f16-a7a0-4dec-b187-a540545eb55f"{[dataflowId="c634de48-8fac-4e04-9a4e-a65495bfb41e"]}[Data],
+				    Pipeline_ = #"c634de48-8fac-4e04-9a4e-a65495bfb41e"{[entity="Pipeline",version=""]}[Data]
+				in
+				    Pipeline_
+
+	annotation PBI_ResultType = Exception
+

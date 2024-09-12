@@ -1,0 +1,19 @@
+table 'PL BRIDGE'
+	lineageTag: 744bd0e6-0d35-4ffa-9450-3b3db4deb83b
+
+	column 'Current L6 PL'
+		dataType: string
+		lineageTag: 34d290e1-acc8-4be6-8cf7-73478d67de72
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: CurrentProductHierarchy[Current L6 PL]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'PL BRIDGE' = calculated
+		mode: import
+		source = SUMMARIZE(CurrentProductHierarchy, CurrentProductHierarchy[Current L6 PL])
+
+	annotation PBI_Id = 685fd89238734908af53446555eb4440
+

@@ -1,0 +1,54 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["BuyerGeo","BuyerPartner","CurrentProductHierarchy","Dim_RealQ_Table","Time","Measure Table","EndCustomer","FACT","Pipeline","Focus Partners","Partner_Segment_Map","Ranger Reseller","SBP_Ramp_Targets","Nimble_No_Alletra","Consolidated Cube (All Geos)","Top250PrimaryStoragePartners"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.132.1053.0 (24.08)
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table DateTableTemplate_f4cb61ba-0f77-4481-899e-1d4378327d3a
+ref table BuyerGeo
+ref table BuyerPartner
+ref table CurrentProductHierarchy
+ref table Dim_RealQ_Table
+ref table LocalDateTable_b17e6bb5-f134-4f3b-8437-736003a5e81c
+ref table LocalDateTable_f273f621-c863-46d0-9ecc-cb434f5d2dab
+ref table LocalDateTable_688bd469-8535-4008-9bef-16c1f97d0c71
+ref table LocalDateTable_af7a58bd-9d23-4818-9461-be31b835524f
+ref table LocalDateTable_56d32c66-55ce-4b29-b753-2c22f0393eca
+ref table LocalDateTable_5de39aa6-b773-49c9-ba20-519c698b9e16
+ref table Time
+ref table LocalDateTable_a0842a26-84ad-4f18-bba5-ec10040362e7
+ref table LocalDateTable_6fa21ecf-791b-4127-b538-04e30053f32c
+ref table LocalDateTable_5a892d96-d9c4-49be-acc2-c1e62647b3c5
+ref table 'Measure Table'
+ref table EndCustomer
+ref table FACT
+ref table LocalDateTable_949eea6d-4f35-47fc-bc6e-b021b905f467
+ref table 'Deal Bracket Table'
+ref table Pipeline
+ref table 'Focus Partners'
+ref table Partner_Segment_Map
+ref table 'Ranger Reseller'
+ref table 'New Alletra Partner Flagging'
+ref table SBP_Ramp_Targets
+ref table Nimble_No_Alletra
+ref table 'Consolidated Cube (All Geos)'
+ref table Top250PrimaryStoragePartners
+ref table 'ZERTO TEST TABLE'
+ref table 'Deal Bracket NO_FY24 Table'
+ref table 'PL BRIDGE'
+ref table 'TIME BRIDGE'
+ref table LocalDateTable_4d4322be-ff60-4f8c-a64d-c76779d05838
+ref table 'PARTNER GEO BRIDGE'
+
+ref cultureInfo en-US
+

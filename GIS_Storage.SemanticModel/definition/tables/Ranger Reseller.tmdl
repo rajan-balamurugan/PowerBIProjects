@@ -1,0 +1,41 @@
+table 'Ranger Reseller'
+	lineageTag: 2e076f2c-12c4-4e63-bdc6-34a7a8020729
+
+	column PPID
+		dataType: string
+		lineageTag: 2725bd06-50a9-4a85-b779-d24fb9957406
+		summarizeBy: none
+		sourceColumn: PPID
+
+		annotation SummarizationSetBy = Automatic
+
+	column GEO
+		dataType: string
+		lineageTag: 4eca5b20-f01f-4c54-94e4-87e09d7d51d6
+		summarizeBy: none
+		sourceColumn: GEO
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ranger Y/N'
+		dataType: string
+		lineageTag: 6efadc07-7679-4c59-ae3a-ed32a2f3ce73
+		summarizeBy: none
+		sourceColumn: Ranger Y/N
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Ranger Reseller' = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"0a7b5f16-a7a0-4dec-b187-a540545eb55f" = Workspaces{[workspaceId="0a7b5f16-a7a0-4dec-b187-a540545eb55f"]}[Data],
+				    #"c634de48-8fac-4e04-9a4e-a65495bfb41e" = #"0a7b5f16-a7a0-4dec-b187-a540545eb55f"{[dataflowId="c634de48-8fac-4e04-9a4e-a65495bfb41e"]}[Data],
+				    #"Ranger Reseller_" = #"c634de48-8fac-4e04-9a4e-a65495bfb41e"{[entity="Ranger Reseller",version=""]}[Data]
+				in
+				    #"Ranger Reseller_"
+
+	annotation PBI_ResultType = Exception
+
