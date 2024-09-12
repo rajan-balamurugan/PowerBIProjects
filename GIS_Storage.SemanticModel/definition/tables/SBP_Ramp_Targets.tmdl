@@ -1,0 +1,59 @@
+table SBP_Ramp_Targets
+	lineageTag: e3925bde-034d-43b3-966e-170eeaabe6d4
+
+	column 'Buyer Geo'
+		dataType: string
+		lineageTag: 504ce552-edd6-4fcb-961d-1c1285dfb00f
+		summarizeBy: none
+		sourceColumn: Buyer Geo
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year'
+		dataType: string
+		lineageTag: 1c571ea1-c53c-43b2-b3dc-ce579cc86fe6
+		summarizeBy: none
+		sourceColumn: Fiscal Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Quarter'
+		dataType: string
+		lineageTag: 231f9bfe-2d97-4063-8da1-fe131c532951
+		summarizeBy: none
+		sourceColumn: Fiscal Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Partner Count Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 00b8cb9e-257b-4407-9288-04081d433fc0
+		summarizeBy: sum
+		sourceColumn: Partner Count Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Alletra Sellout Target'
+		dataType: int64
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: b6e86d04-e3de-47ed-bbaa-0de40dc2ffa8
+		summarizeBy: sum
+		sourceColumn: Alletra Sellout Target
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SBP_Ramp_Targets = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"0a7b5f16-a7a0-4dec-b187-a540545eb55f" = Workspaces{[workspaceId="0a7b5f16-a7a0-4dec-b187-a540545eb55f"]}[Data],
+				    #"c634de48-8fac-4e04-9a4e-a65495bfb41e" = #"0a7b5f16-a7a0-4dec-b187-a540545eb55f"{[dataflowId="c634de48-8fac-4e04-9a4e-a65495bfb41e"]}[Data],
+				    SBP_Ramp_Targets_ = #"c634de48-8fac-4e04-9a4e-a65495bfb41e"{[entity="SBP_Ramp_Targets",version=""]}[Data]
+				in
+				    SBP_Ramp_Targets_
+
+	annotation PBI_ResultType = Exception
+

@@ -1,0 +1,172 @@
+table 'Focus Partners'
+	lineageTag: 8f467e7d-2f18-4fc1-8e7a-93cc58781a95
+
+	column 'Buyer Siebel HQ PPID'
+		dataType: string
+		lineageTag: cd3178cb-36d2-4d46-8d44-e4a0b78c663c
+		summarizeBy: none
+		sourceColumn: Buyer Siebel HQ PPID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer Sub Region1'
+		dataType: string
+		lineageTag: 3a2614de-fae8-4c7c-927f-ae718693c6d4
+		summarizeBy: none
+		sourceColumn: Buyer Sub Region1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer Siebel HQ English Name'
+		dataType: string
+		lineageTag: e5c46de7-02d0-47ea-b515-69f83e75d7b2
+		summarizeBy: none
+		sourceColumn: Buyer Siebel HQ English Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Buyer HC Membership'
+		dataType: string
+		lineageTag: f30b80bf-ea9f-4757-a375-1c0fecd41375
+		summarizeBy: none
+		sourceColumn: Buyer HC Membership
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: 51c7c578-8cf3-4e68-86e6-537134e2153b
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ranger Count'
+		dataType: int64
+		formatString: 0
+		lineageTag: 68c64ce8-6048-47d1-9c30-6cf8b39bcd46
+		summarizeBy: sum
+		sourceColumn: Ranger Count
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Champion Count'
+		dataType: int64
+		formatString: 0
+		lineageTag: 64fcad27-54f3-4966-af54-22591b4f81d8
+		summarizeBy: sum
+		sourceColumn: Champion Count
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# CP assess.'
+		dataType: int64
+		formatString: 0
+		lineageTag: f36618f5-58f7-4dd7-b022-340be02c6f06
+		summarizeBy: sum
+		sourceColumn: # CP assess.
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# CP Active users'
+		dataType: int64
+		formatString: 0
+		lineageTag: d399ba7e-134f-439c-b30f-0cf43f307bf5
+		summarizeBy: sum
+		sourceColumn: # CP Active users
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Certs'
+		dataType: int64
+		formatString: 0
+		lineageTag: 263dcd4c-ba55-4b8f-9c0c-6df9709eb488
+		summarizeBy: sum
+		sourceColumn: # Certs
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Planned PBM HC'
+		dataType: double
+		lineageTag: 190ecae5-f075-4c79-b595-8774eb4068ef
+		summarizeBy: sum
+		sourceColumn: Planned PBM HC
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Storage Peaked HC'
+		dataType: double
+		lineageTag: 35edbea9-6038-4c7d-9658-80999363eac3
+		summarizeBy: sum
+		sourceColumn: Storage Peaked HC
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Storage Spec HC'
+		dataType: double
+		lineageTag: dfa4d51e-a4b6-44b7-8c4b-b13d3d9b5ebb
+		summarizeBy: sum
+		sourceColumn: Storage Spec HC
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'CC Flag'
+		dataType: string
+		lineageTag: 6f6185e0-72ad-4697-89a4-f866d61da2f7
+		summarizeBy: none
+		sourceColumn: CC Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column PBM
+		dataType: string
+		lineageTag: d898d0b4-52e2-46cd-8b89-bb58340b5b01
+		summarizeBy: none
+		sourceColumn: PBM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inside PBM'
+		dataType: string
+		lineageTag: b8fb9658-46ea-4484-bfc2-02e85e1399e5
+		summarizeBy: none
+		sourceColumn: Inside PBM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Storage Peak  PBM'
+		dataType: string
+		lineageTag: 10086c73-9586-48ac-884e-c1da59dcf82b
+		summarizeBy: none
+		sourceColumn: Storage Peak  PBM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Storage Specialist'
+		dataType: string
+		lineageTag: 8cc4e9c3-675b-4057-bf67-3a4a06774d61
+		summarizeBy: none
+		sourceColumn: Storage Specialist
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Focus Partners' = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"0a7b5f16-a7a0-4dec-b187-a540545eb55f" = Workspaces{[workspaceId="0a7b5f16-a7a0-4dec-b187-a540545eb55f"]}[Data],
+				    #"c634de48-8fac-4e04-9a4e-a65495bfb41e" = #"0a7b5f16-a7a0-4dec-b187-a540545eb55f"{[dataflowId="c634de48-8fac-4e04-9a4e-a65495bfb41e"]}[Data],
+				    #"Focus Partners_" = #"c634de48-8fac-4e04-9a4e-a65495bfb41e"{[entity="Focus Partners",version=""]}[Data]
+				in
+				    #"Focus Partners_"
+
+	annotation PBI_ResultType = Exception
+

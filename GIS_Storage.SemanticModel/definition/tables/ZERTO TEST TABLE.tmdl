@@ -1,0 +1,74 @@
+table 'ZERTO TEST TABLE'
+	lineageTag: 4b892c11-5755-4cb0-9cf1-87fe9e686fe0
+
+	column 'Buyer Siebel HQ PPID'
+		dataType: string
+		lineageTag: 9ccd450b-eda1-4458-a78b-26edd6c4d56f
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Top250PrimaryStoragePartners[Buyer Siebel HQ PPID]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FY24 Zerto Sellout Flag'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 08e704b5-e833-4d14-bc2d-d2f0cf7a2e4f
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [FY24 Zerto Sellout Flag]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FY24 Zerto Sellout'
+		dataType: double
+		lineageTag: 73e41349-ef46-48ff-adf3-2bfad8fc9c74
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [FY24 Zerto Sellout]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'FY24 Zerto Pipe'
+		dataType: double
+		lineageTag: 0d07527f-6e34-462f-95c3-ac539958002d
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [FY24 Zerto Pipe]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'FY24 Zerto Pipe Flag'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3942182f-6bf3-4908-ab4e-1a2cbe4dc95a
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [FY24 Zerto Pipe Flag]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'ZERTO TEST TABLE' = calculated
+		mode: import
+		source =
+				
+				SUMMARIZECOLUMNS(
+				    'Top250PrimaryStoragePartners'[Buyer Siebel HQ PPID],
+				    FILTER(Top250PrimaryStoragePartners, Top250PrimaryStoragePartners[Buyer Siebel HQ PPID] <> ""),
+				    "FY24 Zerto Sellout Flag", CALCULATE(SUM('FACT'[TCM Net USD]), CurrentProductHierarchy[Alletra Total (BU_Def)] = "Zerto", 'Time'[Fiscal Year To Date] = "YTD") > 0,
+				    "FY24 Zerto Sellout", CALCULATE(SUM('FACT'[TCM Net USD]), CurrentProductHierarchy[Alletra Total (BU_Def)] = "Zerto", 'Time'[Fiscal Year To Date] = "YTD"),
+				    "FY24 Zerto Pipe", [Zerto FY24 TOTAL PIPE$],
+				    "FY24 Zerto Pipe Flag", [Zerto FY24 TOTAL PIPE$] > 0
+				)
+
+	annotation PBI_Id = a5fc5d259cff42e0a876b640ffa77c07
+

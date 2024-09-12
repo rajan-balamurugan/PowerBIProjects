@@ -1,0 +1,304 @@
+table CurrentProductHierarchy
+	lineageTag: e74b15a7-dec3-44ef-9d81-baf0ca5d3c80
+
+	column 'Current L6 PL'
+		dataType: string
+		lineageTag: 14a17ac1-aa44-49bc-ac9f-fd090aa03916
+		summarizeBy: none
+		sourceColumn: Current L6 PL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"CurrentProductHierarchy","TableItemName":"Alletra Splits (BU_Def)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column 'Current L1 Product Segment'
+		dataType: string
+		lineageTag: eaf20abf-16f9-4a7c-8320-6de7e258b417
+		summarizeBy: none
+		sourceColumn: Current L1 Product Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current L2 Product SubSegment'
+		dataType: string
+		lineageTag: fe9ac770-30c2-4869-8609-62418c3c2e59
+		summarizeBy: none
+		sourceColumn: Current L2 Product SubSegment
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current L3 Product SubGroup'
+		dataType: string
+		lineageTag: 78b0f9a3-def1-4ae5-9e52-46d2c653ffe1
+		summarizeBy: none
+		sourceColumn: Current L3 Product SubGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current L4 Product GBU'
+		dataType: string
+		lineageTag: 42b04bfb-51f8-4962-94dd-b8656e5903c3
+		summarizeBy: none
+		sourceColumn: Current L4 Product GBU
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current L5 Product Category'
+		dataType: string
+		lineageTag: 3a2870ef-d7b9-4b13-bff0-a99fa0321df6
+		summarizeBy: none
+		sourceColumn: Current L5 Product Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current PL Desc'
+		dataType: string
+		lineageTag: 57985070-57cb-40ea-9e5f-79ee8ad67155
+		summarizeBy: none
+		sourceColumn: Current PL Desc
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"CurrentProductHierarchy","TableItemName":"Alletra Core+GL+Block","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column 'Alletra Core+GL+Block' =
+			SWITCH(
+				TRUE,
+				ISBLANK('CurrentProductHierarchy'[Current PL Desc]),
+				"(Blank)",
+				'CurrentProductHierarchy'[Current PL Desc] IN {"3PAR  MID RANGE HW",
+					"3PAR HIGH END SW",
+					"3PAR HIGH-END HW",
+					"3PAR MID RANGE SW",
+					"GL_3PAR HIGH END SW",
+					"GL_3PAR HIGH RAN HW",
+					"GL_3PAR MID RANGE HW",
+					"GL_3PAR MID RANGE SW"},
+				"3PAR",
+				'CurrentProductHierarchy'[Current PL Desc] IN {"ALLETRA 5000 HFA",
+					"ALLETRA 6000 AFA",
+					"ALLETRA 9000",
+					"GL_ALLETRA 5000 HFA",
+					"GL_ALLETRA 6K AFA",
+					"GL_ALLETRA 9K",
+					"GL_BLOCK STG_SAAS"},
+				"ALLETRA CORE",
+				'CurrentProductHierarchy'[Current PL Desc] IN {"GL_STO ENTPSE ARRAYS",
+					"GL_STO ENTRY ARRAYS",
+					"GL_STORAGE AO & ES",
+					"NIMBLE STORAGE ADD-ONS AND EXPANSION SHELVES",
+					"NIMBLE STORAGE ENTERPRISE ARRAYS",
+					"NIMBLE STORAGE ENTRY ARRAYS"},
+				"NIMBLE STORAGE",
+				'CurrentProductHierarchy'[Current PL Desc] IN {"GL_DR_SAAS",
+					"GL_SW SUB SVC 5K",
+					"GL_SW SUB SVC 6K",
+					"GL_SW SUB SVC 9K",
+					"GL_SW SUB SVC5K_SAAS",
+					"GL_SW SUB SVC6K_SAAS",
+					"GL_SW SUB SVC9K_SAAS",
+					"GL_SW SUBS & SVCS",
+					"GL_SW SUBS SVCS_SAAS"},
+				"OTHER SUBSCRIPTION",
+				'CurrentProductHierarchy'[Current PL Desc] IN {"GL_PRIMERA STORAGE",
+					"PRIMERA STORAGE"},
+				"PRIMERA",
+				'CurrentProductHierarchy'[Current PL Desc] IN {"ZERTO ENTERPRISE",
+					"ZERTO MAINT & SUP"},
+				"ZERTO TRAD",
+				"OTHER STORAGE"
+			)
+		dataType: string
+		lineageTag: 6733372a-520d-4d39-bdb8-c3ac45acea8b
+		summarizeBy: none
+		isDataTypeInferred
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "CurrentProductHierarchy"
+				          }
+				        },
+				        "Property": "Current PL Desc"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"c","Entity":"CurrentProductHierarchy"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current PL Desc"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"3PAR","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current PL Desc"}}],"Values":[[{"Literal":{"Value":"'3PAR  MID RANGE HW'"}}],[{"Literal":{"Value":"'3PAR HIGH END SW'"}}],[{"Literal":{"Value":"'3PAR HIGH-END HW'"}}],[{"Literal":{"Value":"'3PAR MID RANGE SW'"}}],[{"Literal":{"Value":"'GL_3PAR HIGH END SW'"}}],[{"Literal":{"Value":"'GL_3PAR HIGH RAN HW'"}}],[{"Literal":{"Value":"'GL_3PAR MID RANGE HW'"}}],[{"Literal":{"Value":"'GL_3PAR MID RANGE SW'"}}]]}}},{"DisplayName":"ALLETRA CORE","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current PL Desc"}}],"Values":[[{"Literal":{"Value":"'ALLETRA 5000 HFA'"}}],[{"Literal":{"Value":"'ALLETRA 6000 AFA'"}}],[{"Literal":{"Value":"'ALLETRA 9000'"}}],[{"Literal":{"Value":"'GL_ALLETRA 5000 HFA'"}}],[{"Literal":{"Value":"'GL_ALLETRA 6K AFA'"}}],[{"Literal":{"Value":"'GL_ALLETRA 9K'"}}],[{"Literal":{"Value":"'GL_BLOCK STG_SAAS'"}}]]}}},{"DisplayName":"NIMBLE STORAGE","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current PL Desc"}}],"Values":[[{"Literal":{"Value":"'GL_STO ENTPSE ARRAYS'"}}],[{"Literal":{"Value":"'GL_STO ENTRY ARRAYS'"}}],[{"Literal":{"Value":"'GL_STORAGE AO & ES'"}}],[{"Literal":{"Value":"'NIMBLE STORAGE ADD-ONS AND EXPANSION SHELVES'"}}],[{"Literal":{"Value":"'NIMBLE STORAGE ENTERPRISE ARRAYS'"}}],[{"Literal":{"Value":"'NIMBLE STORAGE ENTRY ARRAYS'"}}]]}}},{"DisplayName":"OTHER SUBSCRIPTION","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current PL Desc"}}],"Values":[[{"Literal":{"Value":"'GL_DR_SAAS'"}}],[{"Literal":{"Value":"'GL_SW SUB SVC 5K'"}}],[{"Literal":{"Value":"'GL_SW SUB SVC 6K'"}}],[{"Literal":{"Value":"'GL_SW SUB SVC 9K'"}}],[{"Literal":{"Value":"'GL_SW SUB SVC5K_SAAS'"}}],[{"Literal":{"Value":"'GL_SW SUB SVC6K_SAAS'"}}],[{"Literal":{"Value":"'GL_SW SUB SVC9K_SAAS'"}}],[{"Literal":{"Value":"'GL_SW SUBS & SVCS'"}}],[{"Literal":{"Value":"'GL_SW SUBS SVCS_SAAS'"}}]]}}},{"DisplayName":"PRIMERA","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current PL Desc"}}],"Values":[[{"Literal":{"Value":"'GL_PRIMERA STORAGE'"}}],[{"Literal":{"Value":"'PRIMERA STORAGE'"}}]]}}},{"DisplayName":"ZERTO TRAD","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current PL Desc"}}],"Values":[[{"Literal":{"Value":"'ZERTO ENTERPRISE'"}}],[{"Literal":{"Value":"'ZERTO MAINT & SUP'"}}]]}}},{"DisplayName":"OTHER STORAGE"}]}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Alletra Splits (BU_Def)' =
+			SWITCH(
+				TRUE,
+				ISBLANK('CurrentProductHierarchy'[Current L6 PL]),
+				"(Blank)",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"3Z",
+					"43",
+					"4A",
+					"4F"},
+				"3PAR",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"1D",
+					"JW",
+					"M8",
+					"MZ"},
+				"Alletra 5K",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"8R",
+					"EC",
+					"M7",
+					"MY"},
+				"Alletra 6K",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"4G",
+					"7I",
+					"M9",
+					"N0"},
+				"Alletra 9K",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"EN",
+					"MD",
+					"N1",
+					"NB",
+					"OW"},
+				"Alletra MP Block",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"4Z",
+					"7Q",
+					"OR",
+					"OX"},
+				"Alletra MP File",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"MU",
+					"VD"},
+				"Backup & Recovery",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"H5",
+					"H6",
+					"H7"},
+				"Nimble Storage",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"5Y",
+					"MJ",
+					"N2",
+					"S8",
+					"V6"},
+				"PCBE Products",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"6K",
+					"HG",
+					"PC",
+					"PE"},
+				"PCBE Services",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"QS"},
+				"Primera",
+				'CurrentProductHierarchy'[Current L6 PL] IN {"2I",
+					"IX",
+					"J0",
+					"RC",
+					"VI"},
+				"Zerto",
+				"Other"
+			)
+		dataType: string
+		lineageTag: a74f3c73-68c9-4e91-83b2-f101f0e46cce
+		summarizeBy: none
+		isDataTypeInferred
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "CurrentProductHierarchy"
+				          }
+				        },
+				        "Property": "Current L6 PL"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"c","Entity":"CurrentProductHierarchy"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"3PAR","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'3Z'"}}],[{"Literal":{"Value":"'43'"}}],[{"Literal":{"Value":"'4A'"}}],[{"Literal":{"Value":"'4F'"}}]]}}},{"DisplayName":"Alletra 5K","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'1D'"}}],[{"Literal":{"Value":"'JW'"}}],[{"Literal":{"Value":"'M8'"}}],[{"Literal":{"Value":"'MZ'"}}]]}}},{"DisplayName":"Alletra 6K","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'8R'"}}],[{"Literal":{"Value":"'EC'"}}],[{"Literal":{"Value":"'M7'"}}],[{"Literal":{"Value":"'MY'"}}]]}}},{"DisplayName":"Alletra 9K","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'4G'"}}],[{"Literal":{"Value":"'7I'"}}],[{"Literal":{"Value":"'M9'"}}],[{"Literal":{"Value":"'N0'"}}]]}}},{"DisplayName":"Alletra MP Block","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'EN'"}}],[{"Literal":{"Value":"'MD'"}}],[{"Literal":{"Value":"'N1'"}}],[{"Literal":{"Value":"'NB'"}}],[{"Literal":{"Value":"'OW'"}}]]}}},{"DisplayName":"Alletra MP File","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'4Z'"}}],[{"Literal":{"Value":"'7Q'"}}],[{"Literal":{"Value":"'OR'"}}],[{"Literal":{"Value":"'OX'"}}]]}}},{"DisplayName":"Backup & Recovery","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'MU'"}}],[{"Literal":{"Value":"'VD'"}}]]}}},{"DisplayName":"Nimble Storage","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'H5'"}}],[{"Literal":{"Value":"'H6'"}}],[{"Literal":{"Value":"'H7'"}}]]}}},{"DisplayName":"PCBE Products","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'5Y'"}}],[{"Literal":{"Value":"'MJ'"}}],[{"Literal":{"Value":"'N2'"}}],[{"Literal":{"Value":"'S8'"}}],[{"Literal":{"Value":"'V6'"}}]]}}},{"DisplayName":"PCBE Services","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'6K'"}}],[{"Literal":{"Value":"'HG'"}}],[{"Literal":{"Value":"'PC'"}}],[{"Literal":{"Value":"'PE'"}}]]}}},{"DisplayName":"Primera","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'QS'"}}]]}}},{"DisplayName":"Zerto","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Current L6 PL"}}],"Values":[[{"Literal":{"Value":"'2I'"}}],[{"Literal":{"Value":"'IX'"}}],[{"Literal":{"Value":"'J0'"}}],[{"Literal":{"Value":"'RC'"}}],[{"Literal":{"Value":"'VI'"}}]]}}},{"DisplayName":"Other"}]}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"CurrentProductHierarchy","TableItemName":"Alletra Total (BU_Def)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column 'Alletra Total (BU_Def)' =
+			SWITCH(
+				TRUE,
+				ISBLANK('CurrentProductHierarchy'[Alletra Splits (BU_Def)]),
+				"(Blank)",
+				'CurrentProductHierarchy'[Alletra Splits (BU_Def)] IN {"3PAR"},
+				"3PAR",
+				'CurrentProductHierarchy'[Alletra Splits (BU_Def)] IN {"Alletra 5K",
+					"Alletra 6K",
+					"Alletra 9K",
+					"Alletra MP Block",
+					"Alletra MP File"},
+				"Alletra",
+				'CurrentProductHierarchy'[Alletra Splits (BU_Def)] IN {"Backup & Recovery"},
+				"Backup & Recovery",
+				'CurrentProductHierarchy'[Alletra Splits (BU_Def)] IN {"Nimble Storage"},
+				"Nimble Storage",
+				'CurrentProductHierarchy'[Alletra Splits (BU_Def)] IN {"PCBE Products",
+					"PCBE Services"},
+				"PCBE",
+				'CurrentProductHierarchy'[Alletra Splits (BU_Def)] IN {"Primera"},
+				"Primera",
+				'CurrentProductHierarchy'[Alletra Splits (BU_Def)] IN {"Zerto"},
+				"Zerto",
+				"Other"
+			)
+		dataType: string
+		lineageTag: c1c42759-8413-41b6-9ab6-2c26a48bfa6c
+		summarizeBy: none
+		isDataTypeInferred
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "CurrentProductHierarchy"
+				          }
+				        },
+				        "Property": "Alletra Splits (BU_Def)"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"c","Entity":"CurrentProductHierarchy"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Alletra Splits (BU_Def)"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"3PAR","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Alletra Splits (BU_Def)"}}],"Values":[[{"Literal":{"Value":"'3PAR'"}}]]}}},{"DisplayName":"Alletra","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Alletra Splits (BU_Def)"}}],"Values":[[{"Literal":{"Value":"'Alletra 5K'"}}],[{"Literal":{"Value":"'Alletra 6K'"}}],[{"Literal":{"Value":"'Alletra 9K'"}}],[{"Literal":{"Value":"'Alletra MP Block'"}}],[{"Literal":{"Value":"'Alletra MP File'"}}]]}}},{"DisplayName":"Backup & Recovery","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Alletra Splits (BU_Def)"}}],"Values":[[{"Literal":{"Value":"'Backup & Recovery'"}}]]}}},{"DisplayName":"Nimble Storage","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Alletra Splits (BU_Def)"}}],"Values":[[{"Literal":{"Value":"'Nimble Storage'"}}]]}}},{"DisplayName":"PCBE","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Alletra Splits (BU_Def)"}}],"Values":[[{"Literal":{"Value":"'PCBE Products'"}}],[{"Literal":{"Value":"'PCBE Services'"}}]]}}},{"DisplayName":"Primera","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Alletra Splits (BU_Def)"}}],"Values":[[{"Literal":{"Value":"'Primera'"}}]]}}},{"DisplayName":"Zerto","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Alletra Splits (BU_Def)"}}],"Values":[[{"Literal":{"Value":"'Zerto'"}}]]}}},{"DisplayName":"Other"}]}
+
+		annotation SummarizationSetBy = Automatic
+
+	column pdt_dim_key
+		dataType: string
+		lineageTag: 45f1cbdc-dbdb-4815-a897-163160ee60b9
+		summarizeBy: none
+		sourceColumn: pdt_dim_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CurrentProductHierarchy = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"5d8ed3c7-bec6-441c-bde7-d79738c0cb8f" = Workspaces{[workspaceId="5d8ed3c7-bec6-441c-bde7-d79738c0cb8f"]}[Data],
+				    #"5e14a931-be12-4446-a815-6af3387eaefa" = #"5d8ed3c7-bec6-441c-bde7-d79738c0cb8f"{[dataflowId="5e14a931-be12-4446-a815-6af3387eaefa"]}[Data],
+				    CurrentProductHierarchy_ = #"5e14a931-be12-4446-a815-6af3387eaefa"{[entity="CurrentProductHierarchy",version=""]}[Data],
+				    #"Removed Other Columns" = Table.SelectColumns(CurrentProductHierarchy_,{"pdt_dim_key", "Current L6 PL", "Current L1 Product Segment", "Current L2 Product SubSegment", "Current L3 Product SubGroup", "Current L4 Product GBU", "Current L5 Product Category", "Current PL Desc"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each ([Current L1 Product Segment] = "HYBRID CLOUD") and ([Current L4 Product GBU] <> "GL FLEX SOLUTIONS PRODUCTS - COMPUTE" and [Current L4 Product GBU] <> "GL FLEX SOLUTIONS SERVICE - COMPUTE") and ([Current L6 PL] <> "7A"))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Table
+

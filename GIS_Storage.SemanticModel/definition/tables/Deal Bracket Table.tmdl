@@ -1,0 +1,46 @@
+table 'Deal Bracket Table'
+	lineageTag: 3d09c955-e4c8-4a63-ab5e-a27dad568e0f
+
+	column 'Buyer Siebel HQ PPID'
+		dataType: string
+		lineageTag: 2f8e08e4-8901-4ac3-80a5-723b8160fb30
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: BuyerPartner[Buyer Siebel HQ PPID]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Deal Count'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3e5a32c4-61cf-4c18-869e-bb27b7ce132a
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Deal Count]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Deal Bracket'
+		dataType: string
+		lineageTag: 68f8ef3a-1c5c-4df0-9718-bd0185e4604a
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Deal Bracket]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Deal Bracket Table' = calculated
+		mode: import
+		source = ```
+				SUMMARIZECOLUMNS(
+				    BuyerPartner[Buyer Siebel HQ PPID],
+				    FILTER(BuyerPartner, BuyerPartner[Buyer Siebel HQ PPID] <> ""), FILTER(BuyerPartner, BuyerPartner[Buyer Siebel HQ PPID] <> "-"), FILTER(BuyerPartner, BuyerPartner[Buyer Siebel HQ PPID] <> "`"),  
+				    "Deal Count", Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra"),
+				    "Deal Bracket", IF(Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra")>=8,"8+",IF(AND(Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra")>3,Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra")<8),"4-7",IF(AND(Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra")>=1,Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra")<4),"1-3","No Alletra Deals"))))
+				```
+
+	annotation PBI_Id = c44987d54656457cb94a4437808c523d
+

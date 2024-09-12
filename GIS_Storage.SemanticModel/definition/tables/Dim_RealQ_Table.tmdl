@@ -1,0 +1,322 @@
+table Dim_RealQ_Table
+	lineageTag: 2b774aec-6847-48fc-b0e9-309a2bf76450
+
+	column 'Fiscal Year'
+		dataType: string
+		lineageTag: 7f776f13-069c-4f9a-b98e-7981377dbdd1
+		summarizeBy: none
+		sourceColumn: Fiscal Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Quarter'
+		dataType: string
+		lineageTag: d5b11283-41d8-4aa8-81ea-464a12d918d1
+		summarizeBy: none
+		sourceColumn: Fiscal Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Month'
+		dataType: string
+		lineageTag: 0ea461c8-588d-4388-9e12-4e6cb114eace
+		summarizeBy: none
+		sourceColumn: Fiscal Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year Week Number'
+		dataType: string
+		lineageTag: 84c475ea-fecf-4cf7-9900-d1eacfd4f1c4
+		summarizeBy: none
+		sourceColumn: Fiscal Year Week Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Week Number1'
+		dataType: int64
+		formatString: 0
+		lineageTag: a32f0f08-6cbf-4da4-9876-c4470c5f1839
+		summarizeBy: none
+		sourceColumn: Fiscal Week Number1
+
+		annotation SummarizationSetBy = User
+
+	column 'Calendar Month'
+		dataType: string
+		lineageTag: 372c41a9-f432-44fc-ad0d-199c0dba1fb1
+		summarizeBy: none
+		sourceColumn: Calendar Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Start Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 324bfe9b-8aa4-45b3-9234-70fc500afec0
+		summarizeBy: none
+		sourceColumn: Week Start Date
+
+		variation Variation
+			isDefault
+			relationship: 6ef8e8db-61da-47a2-82e9-ae281ea068aa
+			defaultHierarchy: LocalDateTable_b17e6bb5-f134-4f3b-8437-736003a5e81c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Week End Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8efc7743-ae87-433a-92b7-25fa608233a0
+		summarizeBy: none
+		sourceColumn: Week End Date
+
+		variation Variation
+			isDefault
+			relationship: fa9d9aad-2442-41d5-b1fb-2329ebe348ec
+			defaultHierarchy: LocalDateTable_f273f621-c863-46d0-9ecc-cb434f5d2dab.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Week in Year'
+		dataType: string
+		lineageTag: c020ed2a-6b73-4117-ab32-e94c9d851848
+		summarizeBy: none
+		sourceColumn: Week in Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f9b047cc-da9d-4d5b-9aef-99ffd0423f69
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: d97e11fe-bae7-4ce0-a73a-c741b2db90e4
+			defaultHierarchy: LocalDateTable_688bd469-8535-4008-9bef-16c1f97d0c71.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Fiscal Half Year'
+		dataType: string
+		lineageTag: 4e0da1eb-83d4-452e-99fc-9b081f653d9f
+		summarizeBy: none
+		sourceColumn: Fiscal Half Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Month To Date'
+		dataType: string
+		lineageTag: 649369e1-1716-4e33-a8fc-0f877f34e54c
+		summarizeBy: none
+		sourceColumn: Fiscal Month To Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Number in Quarter1'
+		dataType: int64
+		formatString: 0
+		lineageTag: dc256fa2-9f38-4639-b7b5-6aaa5a3b0885
+		summarizeBy: none
+		sourceColumn: Week Number in Quarter1
+
+		annotation SummarizationSetBy = User
+
+	column 'Fiscal Year to Date'
+		dataType: string
+		lineageTag: aa674d11-a7bc-4345-ab26-f499db878f9d
+		summarizeBy: none
+		sourceColumn: Fiscal Year to Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Week to date'
+		dataType: string
+		lineageTag: c27dbe44-c662-4fce-acaa-cc5fca7c3cf1
+		summarizeBy: none
+		sourceColumn: Fiscal Week to date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year Split Week'
+		dataType: string
+		lineageTag: 04da4fff-49e1-44a1-9abb-6a019cf23c9a
+		summarizeBy: none
+		sourceColumn: Fiscal Year Split Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Count Of Days n Fiscal Week'
+		dataType: int64
+		formatString: 0
+		lineageTag: 2e066fd3-871a-4f48-b748-0776c67f29d6
+		summarizeBy: sum
+		sourceColumn: Count Of Days n Fiscal Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year to Date2'
+		dataType: string
+		lineageTag: d280e5ec-64d7-4bd8-b777-1e1df061f74a
+		summarizeBy: none
+		sourceColumn: Fiscal Year to Date2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Year Week'
+		dataType: string
+		lineageTag: 8434fc6b-c96c-46c2-a3f9-a19409e45f59
+		summarizeBy: none
+		sourceColumn: Calendar Year Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Year Split Week'
+		dataType: string
+		lineageTag: bdde2e96-f598-4c55-8a14-7e1d8fde8a37
+		summarizeBy: none
+		sourceColumn: Calendar Year Split Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calendar Year Week Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 6f2a95f2-4be0-42af-8070-9b664a2809ab
+		summarizeBy: none
+		sourceColumn: Calendar Year Week Number
+
+		annotation SummarizationSetBy = User
+
+	column Today_t
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0e704eaa-fe84-4eaf-af07-bd62c3d6ab09
+		summarizeBy: none
+		sourceColumn: Today_t
+
+		variation Variation
+			isDefault
+			relationship: 024d653e-e41a-4648-b16c-980daafbcf65
+			defaultHierarchy: LocalDateTable_af7a58bd-9d23-4818-9461-be31b835524f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Latest Incomplete Week'
+		dataType: string
+		lineageTag: 2b0698cc-4893-4e70-87a0-20cb8d9c74c2
+		summarizeBy: none
+		sourceColumn: Latest Incomplete Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RealQ.FQ_relative'
+		dataType: string
+		lineageTag: b56e5461-104a-4f83-97e2-00066dc75a6c
+		summarizeBy: none
+		sourceColumn: RealQ.FQ_relative
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RealQ.Fiscal Quarter to Date'
+		dataType: string
+		lineageTag: 1b291f1b-2301-4993-9df3-0a2e694965b6
+		summarizeBy: none
+		sourceColumn: RealQ.Fiscal Quarter to Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RealQ.Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 20abe80c-046f-44b5-92e2-4fadfb35678d
+		summarizeBy: none
+		sourceColumn: RealQ.Date
+
+		variation Variation
+			isDefault
+			relationship: 6bfe7d9c-761b-4ec3-8343-f95eb2997319
+			defaultHierarchy: LocalDateTable_56d32c66-55ce-4b29-b753-2c22f0393eca.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'RealQ.Fiscal Quarter'
+		dataType: string
+		lineageTag: cd3b65cf-f4b8-4394-ab02-313c3f1f4f8f
+		summarizeBy: none
+		sourceColumn: RealQ.Fiscal Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RealQ.FY_relative'
+		dataType: string
+		lineageTag: f6b57299-335b-488d-8784-c3b64b6d81f2
+		summarizeBy: none
+		sourceColumn: RealQ.FY_relative
+
+		annotation SummarizationSetBy = Automatic
+
+	column Today
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 84c3a3fb-1fa8-4af3-bf3b-604ad9e84820
+		summarizeBy: none
+		sourceColumn: Today
+
+		variation Variation
+			isDefault
+			relationship: 450fb921-fe8c-48f2-bfb8-78c7e6529aed
+			defaultHierarchy: LocalDateTable_5de39aa6-b773-49c9-ba20-519c698b9e16.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Week Number in Quarter'
+		dataType: int64
+		formatString: 0
+		lineageTag: c44305ce-9284-4336-9860-a0c900647068
+		summarizeBy: sum
+		sourceColumn: Week Number in Quarter
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Week Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 66c258a1-2acc-4084-821c-e4c6b196a991
+		summarizeBy: sum
+		sourceColumn: Fiscal Week Number
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_RealQ_Table = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"5d8ed3c7-bec6-441c-bde7-d79738c0cb8f" = Workspaces{[workspaceId="5d8ed3c7-bec6-441c-bde7-d79738c0cb8f"]}[Data],
+				    #"5e14a931-be12-4446-a815-6af3387eaefa" = #"5d8ed3c7-bec6-441c-bde7-d79738c0cb8f"{[dataflowId="5e14a931-be12-4446-a815-6af3387eaefa"]}[Data],
+				    Dim_RealQ_Table_ = #"5e14a931-be12-4446-a815-6af3387eaefa"{[entity="Dim_RealQ_Table",version=""]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Dim_RealQ_Table_,{{"Fiscal Week Number", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

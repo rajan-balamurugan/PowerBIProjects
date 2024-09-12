@@ -1,0 +1,46 @@
+table 'Deal Bracket NO_FY24 Table'
+	lineageTag: 9a072ba9-73e6-4242-b290-6511541aaf43
+
+	column 'Buyer Siebel HQ PPID'
+		dataType: string
+		lineageTag: a616ec14-10f7-4581-b0e8-dcefd13cb00c
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: BuyerPartner[Buyer Siebel HQ PPID]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Deal Count'
+		dataType: int64
+		formatString: 0
+		lineageTag: a433ecd4-94fe-45bf-a741-34edd4e8d16a
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Deal Count]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Deal Bracket'
+		dataType: string
+		lineageTag: 56fd93ab-fdae-400d-8c1f-326533888bd6
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Deal Bracket]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Deal Bracket NO_FY24 Table' = calculated
+		mode: import
+		source = ```
+				SUMMARIZECOLUMNS(
+				    BuyerPartner[Buyer Siebel HQ PPID],
+				    FILTER(BuyerPartner, BuyerPartner[Buyer Siebel HQ PPID] <> ""), FILTER(BuyerPartner, BuyerPartner[Buyer Siebel HQ PPID] <> "-"), FILTER(BuyerPartner, BuyerPartner[Buyer Siebel HQ PPID] <> "`"),  
+				    "Deal Count", Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year]<>"FY2024"),
+				    "Deal Bracket", IF(Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year]<>"FY2024")>=8,"8+",IF(AND(Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year]<>"FY2024")>3,Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year]<>"FY2024")<8),"4-7",IF(AND(Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year]<>"FY2024")>=1,Calculate(DISTINCTCOUNTNOBLANK('FACT'[Pricing Prgm Deal]),CurrentProductHierarchy[Alletra Total (BU_Def)]="Alletra",'Time'[Fiscal Year]<>"FY2024")<4),"1-3","No Alletra Deals"))))
+				```
+
+	annotation PBI_Id = 3a90fa6474554726b33cff527fdc4e52
+

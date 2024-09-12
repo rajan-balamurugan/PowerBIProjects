@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "GIS_Storage"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "7eb1cfa6-a10a-42af-a1d0-170c4487ecf4"
+  }
+}
